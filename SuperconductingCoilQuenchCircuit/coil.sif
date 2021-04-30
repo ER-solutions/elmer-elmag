@@ -182,8 +182,8 @@ End
 Solver 3  !---- MagnetoDynamics, WhitneyAVSolver
    Exec Solver = Always
    Nonlinear Pre Solvers(1) = 2
-   Post Solvers (1) = 8
-
+   Nonlinear Post Solvers(1) = 4
+   
    Equation = "MGDynamics"
    Variable = "A"
    Procedure = "MagnetoDynamics" "WhitneyAVSolver"
