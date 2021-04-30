@@ -125,6 +125,7 @@ Initial Condition 1
   A {e} = real 0
   A = real 0
   Jfix = real 0.0
+  Temperature = Real 4.2
 End
 Boundary Condition 1
   Name = "Air boundary"
