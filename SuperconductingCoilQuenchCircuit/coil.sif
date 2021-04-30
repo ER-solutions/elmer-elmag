@@ -188,7 +188,12 @@ Solver 3  !---- MagnetoDynamics, WhitneyAVSolver
    Variable = "A"
    Procedure = "MagnetoDynamics" "WhitneyAVSolver"
    
-   NonLinear System Relaxation Factor = 1
+   Nonlinear System Convergence Tolerance = 1.0e-8
+   Nonlinear System Max Iterations = 100
+   Nonlinear System Newton After Iterations = 10
+   Nonlinear System Newton After Tolerance = 1.0e-8
+   Nonlinear System Relaxation Factor = 1
+  
    Export Lagrange Multiplier = Logical True
    Linear System Solver = Iterative
    Linear System Iterative Method = BicgstabL
@@ -207,7 +212,7 @@ Solver 4  !---- MagnetoAndDynamics, MagnetoDynamicsCalcFields
   
   Potential Variable = String "A"
   Steady State Convergence Tolerance = 1.0e-6
-  
+    
   Linear System Solver = Iterative
   Linear System Symmetric = True
   Linear System Iterative Method = CG
