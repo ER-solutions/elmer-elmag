@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-data_coil = pd.read_csv('RESU/coil.dat',delim_whitespace=True,header=None)
+data_coil = pd.read_csv('RESU/coil_energization.dat',delim_whitespace=True,header=None)
 data_coil_extraction = pd.read_csv('RESU/coil_extraction.dat',delim_whitespace=True,header=None)
 
 names_file = open('RESU/coil_extraction.dat.names')
@@ -28,5 +28,3 @@ plt.xlabel("Time(ms)")
 plt.ylabel("Voltage(kV)")
 plt.legend()
 plt.savefig('Figures/all_voltage.png')
-
-
