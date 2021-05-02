@@ -73,7 +73,7 @@ FUNCTION getElectricalConductivity(Model, n, arg) RESULT(S)
     CALL Fatal('getDissipation', 'Permeability of Vacuum')
   END IF
 
-  visu = .FALSE.
+  visu = .TRUE.
 
   !!! Get the variables from the input:
   T = ABS(arg(1))
@@ -86,7 +86,7 @@ FUNCTION getElectricalConductivity(Model, n, arg) RESULT(S)
 
   B = SQRT(Bx**2+By**2+Bz**2)
   Je = SQRT(Jex**2+Jey**2+Jez**2)
-  
+
   Jc_op = getJc(Top,B)
   !!! Current-sharing temperature (K):
   Tcs = Tcm0 + f*(1.0+lambda)*(Je/Jc_op)*(Top-Tcm0)
@@ -134,9 +134,11 @@ FUNCTION getElectricalConductivity(Model, n, arg) RESULT(S)
     !!! Compute Jc(T,B,eps) in A/m^2:
     FUNCTION getJc(arg_T,arg_B) RESULT(JJc)
       IMPLICIT NONE
-      REAL(KIND=dp) :: arg_T, arg_B, JJc
+      REAL(KIND=dp) :: arg_T, arg_B, JJc, epsB
       REAL(KIND=dp) :: Ca1, Ca2, e_0a, e_m, e_ap, e_a, e_sh, s
       REAL(KIND=dp) :: Tc0e, tt, Bc2m0, Bc2, bb, MDG, C1, p, q
+
+      epsB = 0.001 ! to avoid division by zero in JJc
       ! RP Nb3Sn: A. Godeke, "Characterization of High Current RRP Wires as a Function of Magnetic Field, Temperature, and Strain", IEEE-TAS, 2009
       Ca1 = 47.6
       Ca2 = 6.4
@@ -160,7 +162,12 @@ FUNCTION getElectricalConductivity(Model, n, arg) RESULT(S)
       q = 2
 
       IF (arg_T < Tcm0) THEN
-        JJc = (C1/arg_B)*s*(1-tt**1.52)*(1-tt**2)*(bb**p)*((1-bb)**q)
+        IF (arg_B == 0)
+          bb = (arg_B+epsB)/Bc2
+          JJc = (C1/(arg_B+epsB))*s*(1-tt**1.52)*(1-tt**2)*(bb**p)*((1-bb)**q)
+        ELSE
+          JJc = (C1/arg_B)*s*(1-tt**1.52)*(1-tt**2)*(bb**p)*((1-bb)**q)
+        ENDIF
       ELSE
         JJc = 0.0
       END IF
@@ -187,7 +194,7 @@ FUNCTION getElectricalConductivity(Model, n, arg) RESULT(S)
         PRINT 5, beta
         5  FORMAT(' Beta: ', EN12.3)
       END IF
-      
+
       k = 1
       max_iter = 2000
       tol_rel = 0.001

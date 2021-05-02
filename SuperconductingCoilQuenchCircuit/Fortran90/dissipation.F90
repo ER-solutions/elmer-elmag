@@ -95,7 +95,7 @@ FUNCTION getDissipation(Model, n, arg) RESULT(G)
   ELSE IF (T > 299.0) THEN
     T = 299.0 ! No material property data above 300 K
   END IF
-  
+
   Jc_op = getJc(Top,B)
   !!! Current-sharing temperature (K):
   Tcs = Tcm0 + f*(1.0+lambda)*(Je/Jc_op)*(Top-Tcm0)
@@ -154,9 +154,11 @@ FUNCTION getDissipation(Model, n, arg) RESULT(G)
     !!! Compute Jc(T,B,eps) in A/m^2:
     FUNCTION getJc(arg_T,arg_B) RESULT(JJc)
       IMPLICIT NONE
-      REAL(KIND=dp) :: arg_T, arg_B, JJc
+      REAL(KIND=dp) :: arg_T, arg_B, JJc, epsB
       REAL(KIND=dp) :: Ca1, Ca2, e_0a, e_m, e_ap, e_a, e_sh, s
       REAL(KIND=dp) :: Tc0e, tt, Bc2m0, Bc2, bb, MDG, C1, p, q
+
+      epsB = 0.001 ! to avoid division by zero in JJc
       ! RP Nb3Sn: A. Godeke, "Characterization of High Current RRP Wires as a Function of Magnetic Field, Temperature, and Strain", IEEE-TAS, 2009
       Ca1 = 47.6
       Ca2 = 6.4
@@ -180,7 +182,12 @@ FUNCTION getDissipation(Model, n, arg) RESULT(G)
       q = 2
 
       IF (arg_T < Tcm0) THEN
-        JJc = (C1/arg_B)*s*(1-tt**1.52)*(1-tt**2)*(bb**p)*((1-bb)**q)
+        IF (arg_B == 0)
+          bb = (arg_B+epsB)/Bc2
+          JJc = (C1/(arg_B+epsB))*s*(1-tt**1.52)*(1-tt**2)*(bb**p)*((1-bb)**q)
+        ELSE
+          JJc = (C1/arg_B)*s*(1-tt**1.52)*(1-tt**2)*(bb**p)*((1-bb)**q)
+        ENDIF
       ELSE
         JJc = 0.0
       END IF
@@ -207,7 +214,7 @@ FUNCTION getDissipation(Model, n, arg) RESULT(G)
         PRINT 5, beta
         5  FORMAT(' Beta: ', EN12.3)
       END IF
-      
+
       k = 1
       max_iter = 2000
       tol_rel = 0.001
@@ -289,7 +296,7 @@ FUNCTION getDissipation(Model, n, arg) RESULT(G)
       d = SQRT((X-x_d)**2+(Y-y_d)**2+(Z-z_d)**2)
 
       !!! Need to check if the mesh is fine enough otherwise the temperature is psuriously diffused over the mesh!
-      
+
       Qg = 0.0D00
       IF ((d <= R_d) .AND. (tt > t_ini_d) .AND. (tt < (t_ini_d+Dt_d))) THEN
         Qg = Qd

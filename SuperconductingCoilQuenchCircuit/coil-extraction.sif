@@ -3,9 +3,12 @@
 ! Original date: April 2021
 ! eelis.takala@gmail.com, ftrillaudp@gmail.com
 
+
 INCLUDE coil-circuits.definitions
 INCLUDE coil-common.sif
 
+
+!!! SIMULATION !!!
 Simulation
   Coordinate System = String "Cartesian 3D"
   Coordinate Mapping(3) = 1 2 3
@@ -32,6 +35,7 @@ Simulation
   Max Output Level = 5
 End
 
+!!! BODIES !!!
 Body Force 1   !---- Source and circuit
   Name = "Heat source"
   ! Parameters to be passed to the procedure: dissipation.f90
@@ -52,6 +56,7 @@ Body Force 1   !---- Source and circuit
     Real Procedure "./Fortran90/dissipation" "getDissipation"
 End
 
+!!! SOLVERS !!!
 Solver 9  !--- ResultOuputSolve, ResultOuputSolver: save computed fields
    Exec Solver = After timestep
    Equation = "ResultOutput"
