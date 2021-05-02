@@ -12,5 +12,3 @@ plt.plot(data['time'], data['i_d1'], label='Dump Resistor')
 plt.plot(data['time'], data['i_s1'], label='Source')
 plt.legend()
 plt.savefig('Figures/extraction.png')
-
-
