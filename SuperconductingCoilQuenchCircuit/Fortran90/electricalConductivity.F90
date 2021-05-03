@@ -73,7 +73,7 @@ FUNCTION getElectricalConductivity(Model, n, arg) RESULT(S)
     CALL Fatal('getDissipation', 'Permeability of Vacuum')
   END IF
 
-  visu = .TRUE.
+  visu = .FALSE.
 
   !!! Get the variables from the input:
   T = ABS(arg(1))
@@ -97,7 +97,7 @@ FUNCTION getElectricalConductivity(Model, n, arg) RESULT(S)
     IF (visu) THEN
       PRINT *, "*** NO ELECTRICAL RESISTANCE ***"
     END IF
-    S = 1.0*1e18
+    S = 1.0e37 ! close to largest value in 32 bit system (1.7e38)
   ! Current-sharing model
   ELSE IF (( T >= Tcs) .AND. (T < Tcm0 )) THEN
     IF (visu) THEN
@@ -162,12 +162,12 @@ FUNCTION getElectricalConductivity(Model, n, arg) RESULT(S)
       q = 2
 
       IF (arg_T < Tcm0) THEN
-        IF (arg_B == 0)
+        IF (arg_B == 0) THEN
           bb = (arg_B+epsB)/Bc2
           JJc = (C1/(arg_B+epsB))*s*(1-tt**1.52)*(1-tt**2)*(bb**p)*((1-bb)**q)
         ELSE
           JJc = (C1/arg_B)*s*(1-tt**1.52)*(1-tt**2)*(bb**p)*((1-bb)**q)
-        ENDIF
+        END IF
       ELSE
         JJc = 0.0
       END IF

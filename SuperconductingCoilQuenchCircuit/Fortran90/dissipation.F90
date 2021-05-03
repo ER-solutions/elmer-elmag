@@ -182,12 +182,12 @@ FUNCTION getDissipation(Model, n, arg) RESULT(G)
       q = 2
 
       IF (arg_T < Tcm0) THEN
-        IF (arg_B == 0)
+        IF (arg_B == 0) THEN
           bb = (arg_B+epsB)/Bc2
           JJc = (C1/(arg_B+epsB))*s*(1-tt**1.52)*(1-tt**2)*(bb**p)*((1-bb)**q)
         ELSE
           JJc = (C1/arg_B)*s*(1-tt**1.52)*(1-tt**2)*(bb**p)*((1-bb)**q)
-        ENDIF
+        END IF
       ELSE
         JJc = 0.0
       END IF
