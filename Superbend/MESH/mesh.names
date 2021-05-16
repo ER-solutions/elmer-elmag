@@ -7,6 +7,7 @@ $ SOL005 = 5
 $ SOL006 = 6
 $ SOL007 = 7
 $ SOL008 = 8
+$ SOL009 = 9
 ! ----- names for boundaries -----
 $ FAC001 = 1
 $ FAC002 = 2
@@ -14,4 +15,6 @@ $ FAC003 = 3
 $ FAC004 = 4
 $ FAC005 = 5
 $ FAC006 = 6
-$ bnry16 = 7
+$ FAC007 = 7
+$ FAC008 = 8
+$ bnry19 = 9

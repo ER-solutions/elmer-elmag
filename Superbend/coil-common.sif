@@ -2,7 +2,7 @@
 ! energization see coil-energization.sif, for power extraction see coil-extraction.sif
 ! Circuit, parameters, variables, constants, solvers, etc. common to both coil-energization.sif and coil-extraction.sif
 ! Test case authors: Eelis Takala, Frederic Trillaud
-! Original date: October 2020
+! Original date: May 2021
 ! eelis.takala@gmail.com, ftrillaudp@gmail.com
 
 Header
@@ -23,17 +23,78 @@ End
 
 !!! BODIES !!!
 Body 1
-  Name = "coil"
+  Name = "Racetrack 1"
   Target Bodies(1) = 1
   Equation = 1
   Material = 2
-  Body Force = 1
+  Body Force = 3
   Initial Condition = 1
 End
 
 Body 2
-  Name = "air"
+  Name = "Racetrack 2: quenched"
   Target Bodies(1) = 2
+  Equation = 1
+  Material = 2
+  Body Force = 3
+  Initial Condition = 1
+End
+
+Body 3
+  Name = "coil 1"
+  Target Bodies(1) = 3
+  Equation = 1
+  Material = 2
+  Body Force = 4
+  Initial Condition = 1
+End
+
+Body 4
+  Name = "coil 2"
+  Target Bodies(1) = 4
+  Equation = 1
+  Material = 2
+  Body Force = 4
+  Initial Condition = 1
+End
+
+Body 5
+  Name = "Racetrack splices"
+  Target Bodies(1) = 5
+  Equation = 1
+  Material = 1
+  Body Force = 1
+  Initial Condition = 1
+End
+
+Body 6
+  Name = "Coil splices"
+  Target Bodies(1) = 6
+  Equation = 1
+  Material = 1
+  Body Force = 2
+  Initial Condition = 1
+End
+
+Body 7
+  Name = "Core"
+  Target Bodies(1) = 7
+  Equation = 1
+  Material = 3
+  Initial Condition = 1
+End
+
+Body 8
+  Name = "Straps"
+  Target Bodies(1) = 8
+  Equation = 1
+  Material = 3
+  Initial Condition = 1
+End
+
+Body 9
+  Name = "air"
+  Target Bodies(1) = 9
   Equation = 2
   Material = 1
   Initial Condition = 1
@@ -41,16 +102,65 @@ End
 
 
 !!! COMPONENTS !!!
-Component 1    !--- Coil: stranded coil definition
-  Name = String "Coil"
+!--- Need splitting to see the voltage across each coil
+Component 1
+  Name = String "Components of racetrack 1"
   Coil Type = String "test"
   Master Bodies(1) = Integer 1
   Desired Current Density = Real 1.0
   Coil Type = String stranded
   Coil Use W Vector = Logical True
   W Vector Variable Name = String "CoilCurrent e"
-  Number of Turns = Real 8153.0
-  Electrode Area = Real 0.0064 ! cross-section of coil
+  Number of Turns = Real 1710
+  Electrode Area = Real $ racetrackWidth*racetrackThickness
+End
+
+Component 2
+  Name = String "Components of racetrack 2"
+  Coil Type = String "test"
+  Master Bodies(1) = Integer 2
+  Desired Current Density = Real 1.0
+  Coil Type = String stranded
+  Coil Use W Vector = Logical True
+  W Vector Variable Name = String "CoilCurrent e"
+  Number of Turns = Real 1710
+  Electrode Area = Real $ racetrackWidth*racetrackThickness
+End
+
+Component 3
+  Name = String "Components of coil  3"
+  Coil Type = String "test"
+  Master Bodies(1) = Integer 3
+  Desired Current Density = Real 1.0
+  Coil Type = String stranded
+  Coil Use W Vector = Logical True
+  W Vector Variable Name = String "CoilCurrent e"
+  Number of Turns = Real 696
+  Electrode Area = Real $ coilWidth*coilThickness
+End
+
+Component 4
+  Name = String "Components of coil 4"
+  Coil Type = String "test"
+  Master Bodies(1) = Integer 4
+  Desired Current Density = Real 1.0
+  Coil Type = String stranded
+  Coil Use W Vector = Logical True
+  W Vector Variable Name = String "CoilCurrent e"
+  Number of Turns = Real 696
+  Electrode Area = Real $ coilWidth*coilThickness
+End
+
+
+!!! BODY FORCES !!!
+Body Force 1
+  Name = "Source: racetrack splices (W/kg)"
+  Heat Source = Real 1.07671
+End
+
+Body Force 2
+  Name = "Source: coil splices (W/kg)"
+  Heat Source = Real 0.314324
 End
 
 
@@ -67,7 +177,7 @@ Material 2
   Relative Permittivity = Real 1.0
   Heat Conductivity(3,3) = Variable Temperature, Magnetic Flux Density e, Current Density e
     Real Procedure "./Fortran90/therConductivity" "getTherConductivity"
-  Density = Real 9010.0 ! equivalent density used by the heat capacity
+  Density = Real 9010.0
   Heat Capacity = Variable Temperature
     Real Piecewise Linear
       Include "./DATA/cp_eq.dat"
@@ -90,27 +200,78 @@ Material 2
 End
 
 
+Material 3
+  Name = "G10"
+  Relative Permeability = Real 1.0
+  Relative Permittivity = Real 1.0
+  Heat Conductivity = Variable Temperature
+    Real Piecewise Linear
+      Include "./DATA/k_T_epoxy.dat"
+    End
+  Density = Real 1800
+  Heat Capacity = Variable Temperature
+    Real Piecewise Linear
+      Include "./DATA/cp_T_epoxy.dat"
+    End
+End
+
+Material 4
+  Name = "Iron"
+  Relative Permeability = Real 1.0
+  Relative Permittivity = Real 1.0
+
+  H-B Curve = Variable "dummy"
+    Real Cubic Monotone
+      Include "./DATA/curve_BH-CERN.dat"
+    End
+
+  Heat Conductivity = Variable Temperature
+    Real Piecewise Linear
+      Include "./DATA/k_T_epoxy.dat"
+    End
+
+  Density = Real 1800
+  Heat Capacity = Variable Temperature
+    Real Piecewise Linear
+      Include "./DATA/cp_T_epoxy.dat"
+    End
+End
+
+
 !!! INITIAL AND BOUNDARY CONDITIONS !!!
 Initial Condition 1
   Name = "Initial state"
   A {e} = real 0
   A = real 0
   Jfix = real 0.0
-  Temperature = Real 4.2
+  Temperature = Real 4.5
 End
 
 Boundary Condition 1
   Name = "Air boundary"
-  Target Boundaries(1) = 4
+  Target Boundaries(1) = 17
   A {e} = real 0
   A = real 0
   Jfix = real 0.0
 End
 
 Boundary Condition 2
-  Name = "Coil boundary"
-  Target Boundaries(1) = 3
-  Temperature = Real 4.2
+  Name = "Fixed temperature at 4.5 k"
+  Target Boundaries(1) = 14
+  Temperature = Real 4.5
+End
+
+Boundary Condition 3
+  Name = "Fixed temperature at 50 k"
+  Target Boundaries(1) = 15
+  Temperature = Real 50.0
+End
+
+Boundary Condition 4
+  Name = "Heat radiation as a heat flux [W/m^2]"
+  Target Boundaries(1) = 16
+  Heat Flux BC = Logical True
+  Heat Flux = Real 0.03
 End
 
 

@@ -1,47 +1,132 @@
-$ Circuits = 1
+$ Circuits = 2
 
 ! ------------------------ Circuit 1 ------------------------
 ! Define variable count and initialize circuit matrices.
-$ C.1.perm = zeros(6)
-!$ C.1.perm(0) = 2
-!$ C.1.perm(1) = 0
-!$ C.1.perm(2) = 1
-!$ C.1.perm(3) = 4
-!$ C.1.perm(4) = 3
+$ C.1.perm = zeros(8)
+!$ C.1.perm(0) = 0
+!$ C.1.perm(1) = 1
+!$ C.1.perm(2) = 2
+!$ C.1.perm(3) = 3
+!$ C.1.perm(4) = 4
 !$ C.1.perm(5) = 5
+!$ C.1.perm(6) = 6
+!$ C.1.perm(7) = 7
 
-!(I1,V1,Is1,Vs1,Id1,Vd1)
-$ C.1.variables = 6
+!(I1,V1,I2,V2,Is1,Vs1,Id1,Vd1)
+$ C.1.variables = 8
 ! Matrices of Adx/dt + Bx = Source
-$ C.1.A = zeros(6,6)
-$ C.1.B = zeros(6,6)
+$ C.1.A = zeros(8,8)
+$ C.1.B = zeros(8,8)
 
-! Define variables (Component 1).
+! Define variables (Component 1 and 2).
 $ C.1.name.1 = "i_component(1)"
 $ C.1.name.2 = "v_component(1)"
-$ C.1.name.3 = "i_S1"
-$ C.1.name.4 = "v_S1"
-$ C.1.name.5 = "i_d1"
-$ C.1.name.6 = "v_d1"
+$ C.1.name.3 = "i_component(2)"
+$ C.1.name.4 = "v_component(2)"
+$ C.1.name.5 = "i_S1"
+$ C.1.name.6 = "v_S1"
+$ C.1.name.7 = "i_d1"
+$ C.1.name.8 = "v_d1"
 
-! Define sources (Body Force):
-!------------------
-$ C.1.source.3 = "IS1"
+!!! Define sources (Body Force) !!!
+!----------------------------------
+$ C.1.source.4 = "IS1"
 
-! Define network cycles:
+!!! Define network cycles !!!
 !-------------------------
 $Rcl1 = 0.01
-$Rd1 = 1.0
-!Voltage relations:
-$ C.1.B(0,1) = 1
-$ C.1.B(0,2) = Rcl1
-$ C.1.B(0,3) = -1
-$ C.1.B(4,3) = 1 ! Dumping
-$ C.1.B(4,5) = 1 ! Dumping
-$ C.1.B(5,4) = -Rd1 ! Dumping
-$ C.1.B(5,5) = 1 ! Dumping
-!Current relations:
-$ C.1.B(2,2) = 1 ! Source
-$ C.1.B(3,0) = 1
-$ C.1.B(3,2) = -1
-$ C.1.B(3,4) = -1
+$Rd1 = 3.0
+!!! Voltage relations:
+! V_1 + V_2 + R_cl1*I_s1 - V_s1 = 0
+$ C.1.B(5,1) = 1
+$ C.1.B(5,3) = 1
+$ C.1.B(5,4) = Rcl1
+$ C.1.B(5,5) = -1
+
+! V_1 + V_2 + V_d1 = 0
+$ C.1.B(6,1) = 1
+$ C.1.B(6,3) = 1
+$ C.1.B(6,7) = 1
+
+!!! Current relations:
+! I_1 - I_s1 - Id1 = 0
+$ C.1.B(0,0) = 1
+$ C.1.B(0,4) = -1
+$ C.1.B(0,6) = -1
+
+! I_1 - I_2 = 0
+$ C.1.B(2,0) = 1
+$ C.1.B(2,2) = -1
+
+! Source: I_s1 = f_1
+$ C.1.B(4,4) = 1
+
+! -R_d1*I_d1 + V_d1 = 0
+$ C.1.B(7,6) = -Rd1
+$ C.1.B(7,7) = 1
+
+
+! ------------------------ Circuit 2 ------------------------
+! Define variable count and initialize circuit matrices.
+$ C.2.perm = zeros(8)
+!$ C.2.perm(0) = 0
+!$ C.2.perm(1) = 1
+!$ C.2.perm(2) = 2
+!$ C.2.perm(3) = 3
+!$ C.2.perm(4) = 4
+!$ C.2.perm(5) = 5
+!$ C.2.perm(6) = 6
+!$ C.2.perm(7) = 7
+
+!(I3,V3,I4,V4,Is2,Vs2,Id2,Vd2)
+$ C.2.variables = 8
+! Matrices of Adx/dt + Bx = Source
+$ C.2.A = zeros(8,8)
+$ C.2.B = zeros(8,8)
+
+! Define variables (Component 3 and 4).
+$ C.2.name.1 = "i_component(3)"
+$ C.2.name.2 = "v_component(3)"
+$ C.2.name.3 = "i_component(4)"
+$ C.2.name.4 = "v_component(4)"
+$ C.2.name.5 = "i_S2"
+$ C.2.name.6 = "v_S2"
+$ C.2.name.7 = "i_d2"
+$ C.2.name.8 = "v_d2"
+
+!!! Define sources (Body Force) !!!
+!----------------------------------
+$ C.2.source.4 = "IS2"
+
+!!! Define network cycles !!!
+!-------------------------
+$Rcl2 = 0.01
+$Rd2 = 3.0
+!!! Voltage relations:
+! V_3 + V_4 + R_cl2*I_s2 - V_s2 = 0
+$ C.2.B(5,1) = 1
+$ C.2.B(5,3) = 1
+$ C.2.B(5,4) = Rcl2
+$ C.2.B(5,5) = -1
+
+! V_1 + V_2 + V_d1 = 0
+$ C.2.B(6,1) = 1
+$ C.2.B(6,3) = 1
+$ C.2.B(6,7) = 1
+
+!!! Current relations:
+! I_3 - I_s2 - Id2 = 0
+$ C.2.B(0,0) = 1
+$ C.2.B(0,4) = -1
+$ C.2.B(0,6) = -1
+
+! I_3 - I_4 = 0
+$ C.2.B(2,0) = 1
+$ C.2.B(2,2) = -1
+
+! Source: I_s2 = f_2
+$ C.2.B(4,4) = 1
+
+! -R_d2*I_d2 + V_d2 = 0
+$ C.2.B(7,6) = -Rd2
+$ C.2.B(7,7) = 1
