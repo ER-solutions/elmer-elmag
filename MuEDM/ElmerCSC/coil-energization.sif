@@ -3,11 +3,11 @@
 ! Original date: May 11, 2021
 ! eelis.takala@gmail.com, ftrillaudp@gmail.com
 
+!!! INCLUDE !!!
 !--- Parameters from salome run:
-INCLUDE data.dat
-
+Include dataElmer.dat
 !--- Elmer code:
-INCLUDE coil-common.sif
+Include coil-common.sif
 
 
 !!! SIMULATION !!!
@@ -15,8 +15,8 @@ Simulation
   Coordinate System = String "Cartesian 3D"
   Coordinate Mapping(3) = 1 2 3
   Simulation Type = String "Transient"
-  Steady State Max Iterations = 10
-  Steady State Min Iterations = 3
+  Steady State Max Iterations = 1
+  !Steady State Min Iterations = 3
   TimeStepping Method = BDF
   BDF Order = 1
   $ I = 100 / (coilWidth*coilThickness)
@@ -34,13 +34,15 @@ Simulation
   Max Output Level = 5
 End
 
-!!! BODIES !!!
+
+!!! BODY FORCES !!!
 Body Force 1
   Name = "Source"
   Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e8*sin(math.atan2(tx[1],tx[0]))"
   Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e8*cos(math.atan2(tx[1],tx[0]))"
   Current Density 3 = Real 0.0
 End
+
 
 !!! SOLVERS !!!
 Solver 3  !--- ResultOuputSolve, ResultOuputSolver: save computed fields
