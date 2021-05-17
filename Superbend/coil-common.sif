@@ -219,7 +219,6 @@ Material 4
   Name = "Iron"
   Relative Permeability = Real 1.0
   Relative Permittivity = Real 1.0
-
   H-B Curve = Variable "dummy"
     Real Cubic Monotone
       Include "./DATA/curve_BH-CERN.dat"
@@ -227,13 +226,12 @@ Material 4
 
   Heat Conductivity = Variable Temperature
     Real Piecewise Linear
-      Include "./DATA/k_T_epoxy.dat"
+      Include "./DATA/k_T_armco.dat"
     End
-
   Density = Real 1800
   Heat Capacity = Variable Temperature
     Real Piecewise Linear
-      Include "./DATA/cp_T_epoxy.dat"
+      Include "./DATA/cp_T_316LN.dat"
     End
 End
 
@@ -395,7 +393,7 @@ End
 Solver 6 !--- Filter: soft filter for the temperature field
   !--- If T < T_min (minimum temperature expected in the system) then T = T_min
   Exec Solver = Always
-  Equation = String "Filter"
+  Equation = String "Soft filter"
   Procedure = "./Fortran90/regularization" "getRegularizationSolver"
   Minimum Temperature = Real 4.2
 End
