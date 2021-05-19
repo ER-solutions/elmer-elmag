@@ -19,17 +19,19 @@ Simulation
   !Steady State Min Iterations = 3
   TimeStepping Method = BDF
   BDF Order = 1
-  $ I = 100 / (coilWidth*coilThickness)
+
+  $ I = 100
   $ ramp_rate = 1000 ! A/s
   $ ramp_time = I/ramp_rate ! time to reach the current I in [s]
   $ plateau_time = 1
-  $ nof_tstp_1 = 10
-  $ nof_tstp_2 = 100
+  $ nof_tstp_1 = 2
+  $ nof_tstp_2 = 2
   $ sz_tstp_1 = ramp_time / nof_tstp_1
   $ sz_tstp_2 = plateau_time / nof_tstp_2
   Timestep Sizes(2) = Real $ sz_tstp_1 sz_tstp_2
   TimeStep Intervals(2) = Integer $ nof_tstp_1  nof_tstp_2
   Output Intervals(2) = Integer 1 1
+
   Output File = "result.dat"
   Max Output Level = 5
 End
@@ -37,9 +39,37 @@ End
 
 !!! BODY FORCES !!!
 Body Force 1
-  Name = "Source"
+  Name = "Source 1"
   Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e8*sin(math.atan2(tx[1],tx[0]))"
   Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e8*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 2
+  Name = "Source 2"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e6*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e6*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 3
+  Name = "Source 3"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e4*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e4*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 4
+  Name = "Source 4"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e5*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e5*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 5
+  Name = "Source 5"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e3*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e3*cos(math.atan2(tx[1],tx[0]))"
   Current Density 3 = Real 0.0
 End
 

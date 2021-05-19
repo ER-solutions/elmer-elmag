@@ -1,5 +1,5 @@
 $ scaling=0.001
-$ coilWidth=0.015
-$ coilThickness=0.6
-$ coilInnerRadius=0.18
-$ airRadius=1.2
+$ solenoidWidth=0.03
+$ solenoidThickness=1.5
+$ solenoidInnerRadius=0.45
+$ airRadius=3.0
