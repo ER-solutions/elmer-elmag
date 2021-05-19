@@ -1,0 +1,124 @@
+! Ramping current in coil (energization)
+! Test case authors: Eelis Takala, Frederic Trillaud
+! Original date: May 11, 2021
+! eelis.takala@gmail.com, ftrillaudp@gmail.com
+
+!!! INCLUDE !!!
+!--- Parameters from salome run:
+Include dataElmer.dat
+!--- Elmer code:
+Include coil-common.sif
+
+
+!!! SIMULATION !!!
+Simulation
+  Coordinate System = String "Cartesian 3D"
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = String "Transient"
+  Steady State Max Iterations = 1
+  !Steady State Min Iterations = 3
+  TimeStepping Method = BDF
+  BDF Order = 1
+
+  $ I = 100
+  $ ramp_rate = 1000 ! A/s
+  $ ramp_time = I/ramp_rate ! time to reach the current I in [s]
+  $ plateau_time = 1
+  $ nof_tstp_1 = 2
+  $ nof_tstp_2 = 2
+  $ sz_tstp_1 = ramp_time / nof_tstp_1
+  $ sz_tstp_2 = plateau_time / nof_tstp_2
+  Timestep Sizes(2) = Real $ sz_tstp_1 sz_tstp_2
+  TimeStep Intervals(2) = Integer $ nof_tstp_1  nof_tstp_2
+  Output Intervals(2) = Integer 1 1
+
+  Output File = "result.dat"
+  Max Output Level = 5
+End
+
+
+!!! BODY FORCES !!!
+Body Force 1
+  Name = "Source 1"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e3*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e3*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 2
+  Name = "Source 2"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e3*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e3*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 3
+  Name = "Source 3"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e3*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e3*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 4
+  Name = "Source 4"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e3*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e3*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 5
+  Name = "Source 5"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e3*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e3*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 6
+  Name = "Source 6"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e3*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e3*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 7
+  Name = "Source 7"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e3*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e3*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 8
+  Name = "Source 8"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e3*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e3*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 9
+  Name = "Source 9"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e3*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e3*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+Body Force 10
+  Name = "Source 10"
+  Current Density 1 = Variable Coordinate 1, Coordinate 2; Real lua "-1e3*sin(math.atan2(tx[1],tx[0]))"
+  Current Density 2 = Variable Coordinate 1, Coordinate 2; Real lua "1e3*cos(math.atan2(tx[1],tx[0]))"
+  Current Density 3 = Real 0.0
+End
+
+
+!!! SOLVERS !!!
+Solver 3  !--- ResultOuputSolve, ResultOuputSolver: save computed fields
+   Exec Solver = After timestep
+   Equation = "ResultOutput"
+   Procedure = "ResultOutputSolve" "ResultOutputSolver"
+
+   Vtu Format = Logical True
+   Binary Output = Logical True
+
+   Output File Name = File "coil_energization"
+
+   Save Geometry Ids = Logical True
+End

@@ -35,6 +35,14 @@ Body 9
   Name = SOL009
 End
 
+Body 10
+  Name = SOL010
+End
+
+Body 11
+  Name = SOL011
+End
+
 !------ Skeleton for boundary section -----
 Boundary Condition 1
   Name = FAC001
@@ -69,6 +77,6 @@ Boundary Condition 8
 End
 
 Boundary Condition 9
-  Name = bnry19
+  Name = bnry21
 End
 

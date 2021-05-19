@@ -35,7 +35,7 @@ Simulation
 
   Output Intervals(2) = Integer 1 1
   Output File = "result.dat"
-  Max Output Level = 5
+  Max Output Level = 10
 End
 
 
@@ -60,7 +60,7 @@ Body Force 3
   Disturbance Duration = Real 1.0
 
   Heat Source = Variable Time, Temperature, Magnetic Flux Density e, Current Density e
-    Real Procedure "./Fortran90/dissipation" "getDissipation"
+  Real Procedure "./Fortran90/dissipation" "getDissipation"
 End
 
 Body Force 4

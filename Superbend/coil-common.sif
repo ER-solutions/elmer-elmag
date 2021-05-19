@@ -59,42 +59,60 @@ Body 4
 End
 
 Body 5
-  Name = "Racetrack splices"
+  Name = "Racetrack splice 1"
   Target Bodies(1) = 5
   Equation = 1
-  Material = 1
+  Material = 2
   Body Force = 1
   Initial Condition = 1
 End
 
 Body 6
-  Name = "Coil splices"
+  Name = "Racetrack splice 2"
   Target Bodies(1) = 6
   Equation = 1
-  Material = 1
-  Body Force = 2
+  Material = 2
+  Body Force = 1
   Initial Condition = 1
 End
 
 Body 7
-  Name = "Core"
+  Name = "Coil splice 1"
   Target Bodies(1) = 7
   Equation = 1
-  Material = 3
+  Material = 2
+  Body Force = 2
   Initial Condition = 1
 End
 
 Body 8
-  Name = "Straps"
+  Name = "Coil splice 2"
   Target Bodies(1) = 8
+  Equation = 1
+  Material = 2
+  Body Force = 2
+  Initial Condition = 1
+End
+
+Body 9
+  Name = "Core"
+  Target Bodies(1) = 9
+  Equation = 1
+  Material = 4
+  Initial Condition = 1
+End
+
+Body 10
+  Name = "Straps"
+  Target Bodies(1) = 10
   Equation = 1
   Material = 3
   Initial Condition = 1
 End
 
-Body 9
+Body 11
   Name = "air"
-  Target Bodies(1) = 9
+  Target Bodies(1) = 11
   Equation = 2
   Material = 1
   Initial Condition = 1
@@ -106,7 +124,7 @@ End
 Component 1
   Name = String "Components of racetrack 1"
   Coil Type = String "test"
-  Master Bodies(1) = Integer 1
+  Master Bodies(2) = Integer 1 5
   Desired Current Density = Real 1.0
   Coil Type = String stranded
   Coil Use W Vector = Logical True
@@ -118,7 +136,7 @@ End
 Component 2
   Name = String "Components of racetrack 2"
   Coil Type = String "test"
-  Master Bodies(1) = Integer 2
+  Master Bodies(2) = Integer 2 6
   Desired Current Density = Real 1.0
   Coil Type = String stranded
   Coil Use W Vector = Logical True
@@ -130,7 +148,7 @@ End
 Component 3
   Name = String "Components of coil  3"
   Coil Type = String "test"
-  Master Bodies(1) = Integer 3
+  Master Bodies(2) = Integer 3 7
   Desired Current Density = Real 1.0
   Coil Type = String stranded
   Coil Use W Vector = Logical True
@@ -142,7 +160,7 @@ End
 Component 4
   Name = String "Components of coil 4"
   Coil Type = String "test"
-  Master Bodies(1) = Integer 4
+  Master Bodies(2) = Integer 4 8
   Desired Current Density = Real 1.0
   Coil Type = String stranded
   Coil Use W Vector = Logical True
@@ -199,7 +217,6 @@ Material 2
     Real Procedure "./Fortran90/electricalConductivity" "getElectricalConductivity"
 End
 
-
 Material 3
   Name = "G10"
   Relative Permeability = Real 1.0
@@ -208,13 +225,14 @@ Material 3
     Real Piecewise Linear
       Include "./DATA/k_T_epoxy.dat"
     End
-  Density = Real 1800
+  Density = Real 1800.0
   Heat Capacity = Variable Temperature
     Real Piecewise Linear
       Include "./DATA/cp_T_epoxy.dat"
     End
 End
 
+!!! Issue, it does not like something here
 Material 4
   Name = "Iron"
   Relative Permeability = Real 1.0
@@ -223,15 +241,14 @@ Material 4
     Real Cubic Monotone
       Include "./DATA/curve_BH-CERN.dat"
     End
-
   Heat Conductivity = Variable Temperature
     Real Piecewise Linear
-      Include "./DATA/k_T_armco.dat"
+      Include "./DATA/k_T_epoxy.dat"
     End
-  Density = Real 1800
+  Density = Real 1800.0
   Heat Capacity = Variable Temperature
     Real Piecewise Linear
-      Include "./DATA/cp_T_316LN.dat"
+      Include "./DATA/cp_T_epoxy.dat"
     End
 End
 
@@ -247,7 +264,7 @@ End
 
 Boundary Condition 1
   Name = "Air boundary"
-  Target Boundaries(1) = 17
+  Target Boundaries(1) = 19
   A {e} = real 0
   A = real 0
   Jfix = real 0.0
@@ -255,19 +272,19 @@ End
 
 Boundary Condition 2
   Name = "Fixed temperature at 4.5 k"
-  Target Boundaries(1) = 14
+  Target Boundaries(1) = 16
   Temperature = Real 4.5
 End
 
 Boundary Condition 3
   Name = "Fixed temperature at 50 k"
-  Target Boundaries(1) = 15
+  Target Boundaries(1) = 17
   Temperature = Real 50.0
 End
 
 Boundary Condition 4
   Name = "Heat radiation as a heat flux [W/m^2]"
-  Target Boundaries(1) = 16
+  Target Boundaries(1) = 18
   Heat Flux BC = Logical True
   Heat Flux = Real 0.03
 End
@@ -393,7 +410,7 @@ End
 Solver 6 !--- Filter: soft filter for the temperature field
   !--- If T < T_min (minimum temperature expected in the system) then T = T_min
   Exec Solver = Always
-  Equation = String "Soft filter"
+  Equation = String "Filter"
   Procedure = "./Fortran90/regularization" "getRegularizationSolver"
   Minimum Temperature = Real 4.2
 End
