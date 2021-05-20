@@ -51,6 +51,9 @@ Component 1    !--- Coil: stranded coil definition
   W Vector Variable Name = String "CoilCurrent e"
   Number of Turns = Real 8153.0
   Electrode Area = Real $ coilThickness*coilWidth
+  Fit Coil = Logical False
+  Coil Normal(3) = Real 0.0 0.0 1.0
+  Coil Center(3) = Real 0.0 0.0 0.0
 End
 
 
@@ -138,9 +141,6 @@ Solver 1  !--- CoilSolver: Current density in closed coil
   Save Coil Index = Logical True
   Calculate Elemental Fields = Logical True
 
-  FitCoil = Logical True
-  Coil Normal(3) = Real 0.0 0.0 1.0
-  Coil Center(3) = Real 0.0 0.0 0.0
   !Coil Bandwidth = Real 0.1
 End
 
