@@ -17,60 +17,53 @@ Simulation
   TimeStepping Method = BDF
   BDF Order = 1
 
-  $ I1 = 153 !--- Racetracks
-  $ I2 = 82 !--- Coils
-  $ ramp_rate = 1000 ! A/s
-  $ ramp_time_1 = I1/ramp_rate
-  $ ramp_time_2 = I2/ramp_rate
-  $ plateau_time = 1
-  $ nof_tstp_1 = 10
-  $ nof_tstp_2 = 100
-  $ sz_tstp_1a = ramp_time_1 / nof_tstp_1
-  $ sz_tstp_1b = ramp_time_2 / nof_tstp_1
-  $ sz_tstp_2 = plateau_time / nof_tstp_2
-  $ sz_tstp_1 = sz_tstp_1b
-  !min(sz_tstp_1a,sz_tstp_1b)
-  Timestep Sizes(2) = Real $ sz_tstp_1 sz_tstp_2
-  TimeStep Intervals(2) = Integer $ nof_tstp_1  nof_tstp_2
+  !--- Racetracks:
+  $ I1 = 153
+  $ I2 = 82
+  $ ramp_rate = 1000
+  $ ramp_time1 = I1/ramp_rate
+  $ ramp_time2 = I2/ramp_rate
+  Timestep Sizes(2) = Real 0.1 0.1
+  TimeStep Intervals(2) = Integer 10 10
 
   Output Intervals(2) = Integer 1 1
   Output File = "result.dat"
+
   Max Output Level = 10
 End
 
 
 !!! BODY FORCES !!!
-Body Force 3
+Body Force 1
   Name = "Current in racetracks and quenched in racetrack 2"
-  IS1 = Variable time; Real MATC "if (tx <= ramp_time_1) (ramp_rate*tx); else I1;"
+  IS1 = Variable time; Real MATC "if (tx <= ramp_time1) (ramp_rate*tx); else I1;"
 
-  !!! Parameters to be passed to the procedure: dissipation.f90
-  !!! Dimension of the spherical disturbance (depends on local mesh size)
-  Disturbance Size = Real $  racetrackWidth / 4
-  !min(racetrackWidth,racetrackThickness) / 4
-  !!! Center of the spherical disturbance
-  Disturbance X Center = Real $ -0.5*(racetrackLength+racetrackWidth)-racetrackInnerRadius
+  !--- Parameters to be passed to the procedure: dissipation.f90
+  !--- Dimension of the spherical disturbance (depends on local mesh size)
+  Disturbance Size = Real $ (racetrackWidth/4)
+  !--- Center of the spherical disturbance
+  Disturbance X Center = Real $ (-0.5*(racetrackLength+racetrackWidth)-racetrackInnerRadius)
   Disturbance Y Center = Real 0.0
-  Disturbance Z Center = Real $ -0.5*(gap+racetrackThickness)
-  !!! Value of heat disturbance in [W/kg]
-  Heat Disturbance = Real $800.0
-  !!! Initial time of the disturbance
-  Heat Disturbance Initial Time = Real $ ramp_time_1+0.1*plateau_time
-  !!! Duration of the disturbance
+  Disturbance Z Center = Real $ (-0.5*(gap+racetrackThickness))
+  !--- Value of heat disturbance in [W/kg]
+  Heat Disturbance = Real 800.0
+  !--- Initial time of the disturbance
+  Heat Disturbance Initial Time = Real $ (ramp_time1+0.05)
+  !--- Duration of the disturbance
   Disturbance Duration = Real 1.0
 
   Heat Source = Variable Time, Temperature, Magnetic Flux Density e, Current Density e
   Real Procedure "./Fortran90/dissipation" "getDissipation"
 End
 
-Body Force 4
-  Name = "Current in coils"
-  IS2 = Variable time; Real MATC "if (tx <= ramp_time_2) (ramp_rate*tx); else I2;"
+Body Force 2
+  Name = "Current in racetracks and quenched in racetrack 2"
+  IS2 = Variable time; Real MATC "if (tx <= ramp_time2) (ramp_rate*tx); else I2;"
 End
 
 
 !!! SOLVERS !!!
-Solver 9  !--- ResultOuputSolve, ResultOuputSolver: save computed fields
+Solver 9 !--- ResultOuputSolve, ResultOuputSolver: save computed fields
    Exec Solver = After timestep
    Equation = "ResultOutput"
    Procedure = "ResultOutputSolve" "ResultOutputSolver"

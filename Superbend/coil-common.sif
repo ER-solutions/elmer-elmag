@@ -1,6 +1,4 @@
-! A test case for circuits to power a superconducting magnet
-! energization see coil-energization.sif, for power extraction see coil-extraction.sif
-! Circuit, parameters, variables, constants, solvers, etc. common to both coil-energization.sif and coil-extraction.sif
+! Superbend - Paul Scherrer Institute, Switzerland
 ! Test case authors: Eelis Takala, Frederic Trillaud
 ! Original date: May 2021
 ! eelis.takala@gmail.com, ftrillaudp@gmail.com
@@ -27,158 +25,119 @@ Body 1
   Target Bodies(1) = 1
   Equation = 1
   Material = 2
-  Body Force = 3
+  Body Force = 1
   Initial Condition = 1
 End
 
 Body 2
-  Name = "Racetrack 2: quenched"
+  Name = "Racetrack 2"
   Target Bodies(1) = 2
   Equation = 1
   Material = 2
-  Body Force = 3
+  Body Force = 1
   Initial Condition = 1
 End
 
 Body 3
-  Name = "coil 1"
+  Name = "Coil 1"
   Target Bodies(1) = 3
   Equation = 1
   Material = 2
-  Body Force = 4
+  Body Force = 2
   Initial Condition = 1
 End
 
 Body 4
-  Name = "coil 2"
+  Name = "Coil 2"
   Target Bodies(1) = 4
   Equation = 1
   Material = 2
-  Body Force = 4
+  Body Force = 2
   Initial Condition = 1
 End
 
 Body 5
-  Name = "Racetrack splice 1"
-  Target Bodies(1) = 5
-  Equation = 1
-  Material = 2
-  Body Force = 1
-  Initial Condition = 1
-End
-
-Body 6
-  Name = "Racetrack splice 2"
-  Target Bodies(1) = 6
-  Equation = 1
-  Material = 2
-  Body Force = 1
-  Initial Condition = 1
-End
-
-Body 7
-  Name = "Coil splice 1"
-  Target Bodies(1) = 7
-  Equation = 1
-  Material = 2
-  Body Force = 2
-  Initial Condition = 1
-End
-
-Body 8
-  Name = "Coil splice 2"
-  Target Bodies(1) = 8
-  Equation = 1
-  Material = 2
-  Body Force = 2
-  Initial Condition = 1
-End
-
-Body 9
   Name = "Core"
-  Target Bodies(1) = 9
-  Equation = 1
-  Material = 4
-  Initial Condition = 1
-End
-
-Body 10
-  Name = "Straps"
-  Target Bodies(1) = 10
-  Equation = 1
+  Target Bodies(1) = 5
+  Equation = 2
   Material = 3
   Initial Condition = 1
 End
 
-Body 11
-  Name = "air"
-  Target Bodies(1) = 11
+Body 6
+  Name = "Straps"
+  Target Bodies(1) = 6
   Equation = 2
+  Material = 4
+  Initial Condition = 1
+End
+
+Body 7
+  Name = "air"
+  Target Bodies(1) = 7
+  Equation = 3
   Material = 1
   Initial Condition = 1
 End
 
 
 !!! COMPONENTS !!!
-!--- Need splitting to see the voltage across each coil
 Component 1
   Name = String "Components of racetrack 1"
   Coil Type = String "test"
-  Master Bodies(2) = Integer 1 5
+  Master Bodies(1) = Integer 1
   Desired Current Density = Real 1.0
   Coil Type = String stranded
   Coil Use W Vector = Logical True
   W Vector Variable Name = String "CoilCurrent e"
   Number of Turns = Real 1710
   Electrode Area = Real $ racetrackWidth*racetrackThickness
+  Fit Coil = Logical False
+  Coil Normal(3) = Real 0.0 0.0 1.0
+  Coil Center(3) = Real 0.0 0.0 $(0.5*(racetrackThickness+gap))
 End
 
 Component 2
   Name = String "Components of racetrack 2"
   Coil Type = String "test"
-  Master Bodies(2) = Integer 2 6
+  Master Bodies(1) = Integer 2
   Desired Current Density = Real 1.0
   Coil Type = String stranded
   Coil Use W Vector = Logical True
   W Vector Variable Name = String "CoilCurrent e"
   Number of Turns = Real 1710
   Electrode Area = Real $ racetrackWidth*racetrackThickness
+  Fit Coil = Logical False
+  Coil Normal(3) = Real 0.0 0.0 1.0
+  Coil Center(3) = Real 0.0 0.0 $(-0.5*(racetrackThickness+gap))
 End
 
 Component 3
   Name = String "Components of coil  3"
   Coil Type = String "test"
-  Master Bodies(2) = Integer 3 7
+  Master Bodies(1) = Integer 3
   Desired Current Density = Real 1.0
   Coil Type = String stranded
   Coil Use W Vector = Logical True
   W Vector Variable Name = String "CoilCurrent e"
   Number of Turns = Real 696
   Electrode Area = Real $ coilWidth*coilThickness
+  Coil Normal(3) = Real 0.0 0.0 1.0
+  Coil Center(3) = Real 0.0 0.0 $(0.5*(coilThickness+gap))
 End
 
 Component 4
   Name = String "Components of coil 4"
   Coil Type = String "test"
-  Master Bodies(2) = Integer 4 8
+  Master Bodies(1) = Integer 4
   Desired Current Density = Real 1.0
   Coil Type = String stranded
   Coil Use W Vector = Logical True
   W Vector Variable Name = String "CoilCurrent e"
   Number of Turns = Real 696
   Electrode Area = Real $ coilWidth*coilThickness
-End
-
-
-!!! BODY FORCES !!!
-Body Force 1
-  Name = "Source: racetrack splices (W/kg)"
-  Heat Source = Real 1.07671
-End
-
-Body Force 2
-  Name = "Source: coil splices (W/kg)"
-  Heat Source = Real 0.314324
+  Coil Normal(3) = Real 0.0 0.0 1.0
+  Coil Center(3) = Real 0.0 0.0 $(-0.5*(coilThickness+gap))
 End
 
 
@@ -198,73 +157,120 @@ Material 2
   Density = Real 9010.0
   Heat Capacity = Variable Temperature
     Real Piecewise Linear
-      Include "./DATA/cp_eq.dat"
+      Include ./DATA/cp_eq.dat
     End
 
-  ! Parameters of superconducting wire and coil
+  !--- Parameters of superconducting wire and coil
   Matrix Density = Real 8960.0
   Superconductor Density = Real 7000.0
-  Matrix Electric Conductivity = Real 1e8 ! lumped materials called "matrix"
+  Matrix Electric Conductivity = Real 1e8 ! lumped materials called matrix
   Critical Temperature = Real 16.8
   N-Value = Real 15.0
   Critical Electrical Field = Real 1e-4
-  Operating Temperature = Real 4.2
+  Operating Temperature = Real 4.5
   Matrix to Superconductor Ratio = Real 1.2
   Filling Factor = Real 0.9
 
-  ! Read into the circuit solver: computes the resistance as the sum of all the element contribution
+  !--- Read into the circuit solver: computes the resistance as the sum of all the element contribution
   Electric Conductivity = Variable Temperature, Magnetic Flux Density e, Current Density e
     Real Procedure "./Fortran90/electricalConductivity" "getElectricalConductivity"
 End
 
 Material 3
-  Name = "G10"
-  Relative Permeability = Real 1.0
-  Relative Permittivity = Real 1.0
-  Heat Conductivity = Variable Temperature
-    Real Piecewise Linear
-      Include "./DATA/k_T_epoxy.dat"
-    End
-  Density = Real 1800.0
-  Heat Capacity = Variable Temperature
-    Real Piecewise Linear
-      Include "./DATA/cp_T_epoxy.dat"
-    End
-End
-
-!!! Issue, it does not like something here
-Material 4
   Name = "Iron"
   Relative Permeability = Real 1.0
   Relative Permittivity = Real 1.0
+  Density = Real 7860.0
+
   H-B Curve = Variable "dummy"
     Real Cubic Monotone
-      Include "./DATA/curve_BH-CERN.dat"
+      Include ./DATA/curve_BH-CERN.dat
     End
+
+  !--- k of ARMCO
   Heat Conductivity = Variable Temperature
     Real Piecewise Linear
-      Include "./DATA/k_T_epoxy.dat"
+      4.2 18.0
+      10 33.2
+      25 79.8
+      100 95.1
+      150 85.7
+      200 81.4
+      280 75.3
     End
-  Density = Real 1800.0
+
+  !--- cp of 316LN
   Heat Capacity = Variable Temperature
     Real Piecewise Linear
-      Include "./DATA/cp_T_epoxy.dat"
+      4.2 2.0628093
+      10 5.4875899
+      25 22.619359
+      50 94.860916
+      100 302.81804
+      150 410.96191
+      200 451.82989
+      250 468.68071
+      300 476.59573
     End
+End
+
+Material 4
+  Name = "G10"
+  Relative Permeability = Real 1.0
+  Relative Permittivity = Real 1.0
+  Density = Real 1800.0
+
+  !--- k of epoxy
+  Heat Conductivity = Variable Temperature
+    Real Piecewise Linear
+      4.2 0.043933128
+      10.2 0.057341786
+      25.2 0.078578343
+      50.2 0.10757351
+      100.2 0.14699653
+      150.2 0.17037609
+      200.2 0.18516623
+      250.2 0.19509355
+      299.7 0.20200972
+    End
+
+  !--- cp of epoxy
+  Heat Capacity = Variable Temperature
+    Real Linear
+      4.2 0.11956382
+      10 0.436995
+      25 1.6314262
+      50 4.3361371
+      100 11.430794
+      150 20.109446
+      200 30.005253
+      250 40.916062
+      300 52.709829
+    End
+
+  !--- This does not work:
+  ! Heat Conductivity = Variable Temperature
+  !   Real Piecewise Linear
+  !     Include "./DATA/try.dat"
+  !   End
+  ! Heat Capacity = Variable Temperature
+  !   Real Piecewise Linear
+  !     Include "./DATA/try.dat"
+  !   End
 End
 
 
 !!! INITIAL AND BOUNDARY CONDITIONS !!!
 Initial Condition 1
   Name = "Initial state"
-  A {e} = real 0
-  A = real 0
-  Jfix = real 0.0
-  Temperature = Real 4.5
+  A {e} = Real 0.0
+  A = Real 0.0
+  Jfix = Real 0.0
 End
 
 Boundary Condition 1
   Name = "Air boundary"
-  Target Boundaries(1) = 19
+  Target Boundaries(1) = 15
   A {e} = real 0
   A = real 0
   Jfix = real 0.0
@@ -272,19 +278,19 @@ End
 
 Boundary Condition 2
   Name = "Fixed temperature at 4.5 k"
-  Target Boundaries(1) = 16
+  Target Boundaries(1) = 12
   Temperature = Real 4.5
 End
 
 Boundary Condition 3
   Name = "Fixed temperature at 50 k"
-  Target Boundaries(1) = 17
+  Target Boundaries(1) = 13
   Temperature = Real 50.0
 End
 
 Boundary Condition 4
   Name = "Heat radiation as a heat flux [W/m^2]"
-  Target Boundaries(1) = 18
+  Target Boundaries(1) = 14
   Heat Flux BC = Logical True
   Heat Flux = Real 0.03
 End
@@ -296,12 +302,12 @@ Solver 1  !--- CoilSolver: Current density in closed coil
   Equation = "CoilSolver"
   Procedure = "CoilSolver" "CoilSolver"
 
-  Steady State Convergence Tolerance = 1e-06 ! related to the Steady State Iterations (see Simulation)
+  Steady State Convergence Tolerance = 1.0e-06 ! related to the Steady State Iterations (see Simulation)
 
   Linear System Solver = "Iterative"
   Linear System Preconditioning = ILU1
   Linear System Max Iterations = 500
-  Linear System Convergence Tolerance = 1e-7
+  Linear System Convergence Tolerance = 1.0e-8
   Linear System Iterative Method = BiCGStab
   Linear System Residual Output = 1
 
@@ -313,8 +319,6 @@ Solver 1  !--- CoilSolver: Current density in closed coil
   Save Coil Set = Logical True
   Save Coil Index = Logical True
   Calculate Elemental Fields = Logical True
-
-  Coil Normal(3) = Real 0. 0. 1.
 End
 
 Solver 2 !--- CircuitsAndDynamics: External electrical circuit
@@ -327,29 +331,30 @@ End
 
 Solver 3  !---- MagnetoDynamics, WhitneyAVSolver: A-V solver
    Exec Solver = Always
-   Nonlinear Pre Solvers(1) = 2 ! run the circuit solver iteratively
-   Nonlinear Post Solvers(1) = 4 ! postprocess the circuit outputs
-
    Equation = "MGDynamics"
    Variable = "A"
    Procedure = "MagnetoDynamics" "WhitneyAVSolver"
 
-   Nonlinear System Convergence Tolerance = 1e-8
+   Nonlinear Pre Solvers(1) = 2 ! run the circuit solver iteratively
+   Nonlinear Post Solvers(1) = 4 ! postprocess the circuit outputs
+
+   Steady State Convergence Tolerance = 1.0e-6
+
+   Nonlinear System Convergence Tolerance = 1e-6
    Nonlinear System Max Iterations = 100
    Nonlinear System Newton After Iterations = 50
-   Nonlinear System Newton After Tolerance = 1.0e-7
+   Nonlinear System Newton After Tolerance = 1.0e-6
    Nonlinear System Relaxation Factor = 1
 
    Export Lagrange Multiplier = Logical True
    Linear System Solver = Iterative
    Linear System Iterative Method = BicgstabL
-   Linear System preconditioning = none
-   Linear System Convergence Tolerance = 1.e-4 ! for convergence on extraction
+   BicgstabL polynomial degree = 6
+   Linear System Preconditioning = none ! converge quicker without
+   !Linear System ILUT Tolerance = 1.0e-6
+   Linear System Convergence Tolerance = 1.0e-4 ! for convergence on extraction
    Linear System Max Iterations = 3000
    Linear System Residual Output = 10
-   Linear System ILUT Tolerance=1e-6
-   BicgstabL polynomial degree = 6
-   Steady State Convergence Tolerance = 1e-06
 End
 
 Solver 4  !---- MagnetoAndDynamics, MagnetoDynamicsCalcFields: filed computation from A-V solver
@@ -412,7 +417,7 @@ Solver 6 !--- Filter: soft filter for the temperature field
   Exec Solver = Always
   Equation = String "Filter"
   Procedure = "./Fortran90/regularization" "getRegularizationSolver"
-  Minimum Temperature = Real 4.2
+  Minimum Temperature = Real 4.5
 End
 
 Solver 7 !--- Check Model: Check if nodes are inside the volume of the disturbance, otherwise, the program stops
@@ -427,14 +432,21 @@ Solver 8  !--- CircuitsAndDynamics, CircuitsOutput: save data from circuit
    Procedure = "CircuitsAndDynamics" "CircuitsOutput"
 End
 
+
 !!! EQUATIONS !!!
 Equation 1
-  Name = "Multiphysics for coil"
-  Active Solvers(8) = 1 2 3 4 5 6 7 9
+  Name = "Multiphysics for inductors"
+  Active Solvers(10) = 1 2 3 4 5 6 7 8 9 10
   Heat Equation = Logical True
 End
 
 Equation 2
+  Name = "Multiphysics for iron and straps"
+  Active Solvers(6) = 3 4 5 6 7 9
+  Heat Equation = Logical True
+End
+
+Equation 3
   Name = "MagnetoDynamic for air"
   Active Solvers(3) = 3 4 9
 End

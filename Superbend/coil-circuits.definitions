@@ -34,8 +34,9 @@ $ C.1.source.4 = "IS1"
 
 !!! Define network cycles !!!
 !-------------------------
-$Rcl1 = 0.01
-$Rd1 = 3.0
+$ Rcl1 = 0.01
+$ Rd1 = 3.0
+
 !!! Voltage relations:
 ! V_1 + V_2 + R_cl1*I_s1 - V_s1 = 0
 $ C.1.B(5,1) = 1
@@ -100,8 +101,9 @@ $ C.2.source.4 = "IS2"
 
 !!! Define network cycles !!!
 !-------------------------
-$Rcl2 = 0.01
-$Rd2 = 3.0
+$ Rcl2 = 0.01
+$ Rd2 = 3.0
+
 !!! Voltage relations:
 ! V_3 + V_4 + R_cl2*I_s2 - V_s2 = 0
 $ C.2.B(5,1) = 1
