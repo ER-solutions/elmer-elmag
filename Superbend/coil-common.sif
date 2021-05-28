@@ -187,30 +187,16 @@ Material 3
       Include ./DATA/curve_BH-CERN.dat
     End
 
-  !--- k of ARMCO
+  !--- k of ARMCO (works with try.dat if we do not had the next include of the cp)
   Heat Conductivity = Variable Temperature
     Real Piecewise Linear
-      4.2 18.0
-      10 33.2
-      25 79.8
-      100 95.1
-      150 85.7
-      200 81.4
-      280 75.3
+      Include "./DATA/try.dat"
     End
 
-  !--- cp of 316LN
+  !--- cp of 316LN (adding Include ..., it does not work)
   Heat Capacity = Variable Temperature
     Real Piecewise Linear
-      4.2 2.0628093
-      10 5.4875899
-      25 22.619359
-      50 94.860916
-      100 302.81804
-      150 410.96191
-      200 451.82989
-      250 468.68071
-      300 476.59573
+      Include "./DATA/try.dat"
     End
 End
 
@@ -248,7 +234,7 @@ Material 4
       300 52.709829
     End
 
-  !--- This does not work:
+  ! !--- This does not work:
   ! Heat Conductivity = Variable Temperature
   !   Real Piecewise Linear
   !     Include "./DATA/try.dat"
@@ -341,10 +327,10 @@ Solver 3  !---- MagnetoDynamics, WhitneyAVSolver: A-V solver
    Steady State Convergence Tolerance = 1.0e-6
 
    Nonlinear System Convergence Tolerance = 1e-6
-   Nonlinear System Max Iterations = 100
-   Nonlinear System Newton After Iterations = 50
+   Nonlinear System Max Iterations = 25
+   Nonlinear System Newton After Iterations = 5 ! change from Picard to Newton after 5 iterations
    Nonlinear System Newton After Tolerance = 1.0e-6
-   Nonlinear System Relaxation Factor = 1
+   Nonlinear System Relaxation Factor = 0.98
 
    Export Lagrange Multiplier = Logical True
    Linear System Solver = Iterative
@@ -352,7 +338,7 @@ Solver 3  !---- MagnetoDynamics, WhitneyAVSolver: A-V solver
    BicgstabL polynomial degree = 6
    Linear System Preconditioning = none ! converge quicker without
    !Linear System ILUT Tolerance = 1.0e-6
-   Linear System Convergence Tolerance = 1.0e-4 ! for convergence on extraction
+   Linear System Convergence Tolerance = 1.0e-7 ! for convergence on extraction
    Linear System Max Iterations = 3000
    Linear System Residual Output = 10
 End
@@ -370,9 +356,9 @@ Solver 4  !---- MagnetoAndDynamics, MagnetoDynamicsCalcFields: filed computation
   Linear System Symmetric = True
   Linear System Iterative Method = CG
   Linear System Max Iterations = 5000
-  Linear System Convergence Tolerance = 1.0e-6
+  Linear System Convergence Tolerance = 1.0e-8
   Linear System Preconditioning = ILU0
-  Linear System ILUT Tolerance = 1.0e-3
+  Linear System ILUT Tolerance = 1.0e-6
   Linear System Abort Not Converged = False
   Linear System Residual Output = 1
   Linear System Precondition Recompute = 1
@@ -396,7 +382,7 @@ Solver 5 !--- HeatSolve: Heat balance equation
   Nonlinear Timestepping = Logical True
 
   Nonlinear System Convergence Tolerance = 1.0e-6
-  Nonlinear System Max Iterations = 100
+  Nonlinear System Max Iterations = 25
   Nonlinear System Newton After Iterations = 10
   Nonlinear System Newton After Tolerance = 1.0e-4
   Nonlinear System Relaxation Factor = 0.5
@@ -404,7 +390,7 @@ Solver 5 !--- HeatSolve: Heat balance equation
   Linear System Solver = Iterative
   Linear System Iterative Method = BiCGStabl
   Linear System Max Iterations = 500
-  Linear System Convergence Tolerance = 1.0e-4
+  Linear System Convergence Tolerance = 1.0e-6
   BiCGstabl polynomial degree = 6
   Linear System Abort Not Converged = Logical False
   Linear System Preconditioning = ILU2 ! none

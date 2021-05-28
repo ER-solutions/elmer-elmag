@@ -48,7 +48,7 @@ Body Force 1
   !--- Value of heat disturbance in [W/kg]
   Heat Disturbance = Real 800.0
   !--- Initial time of the disturbance
-  Heat Disturbance Initial Time = Real $ (ramp_time1+0.05)
+  Heat Disturbance Initial Time = Real $ (ramp_time1+0.1)
   !--- Duration of the disturbance
   Disturbance Duration = Real 1.0
 

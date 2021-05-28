@@ -10,7 +10,7 @@ else
 fi
 
 DATE=$(date +%s)
-LOGFILE="$logname$DATE-run.log"
+LOGFILE="./Log/$logname$DATE-run.log"
 echo " "
 echo "Run the coil powering: coil-energization.sif" | tee $LOGFILE
 rm ./RESU/coil_* | tee -a $LOGFILE
@@ -23,4 +23,4 @@ ElmerSolver coil-energization.sif | tee -a $LOGFILE
 #python ./Python/plot_all.py | tee -a $LOGFILE
 #eog ./Figures/all_current.png &
 #eog ./Figures/all_voltage.png &
-mv $LOGFILE Log/
+#mv $LOGFILE Log/
