@@ -15,8 +15,8 @@ data['resistance'] = abs(data['v_component(1)']/data['i_component(1)'])
 
 print (data)
 
-plt.loglog(data['time']*1e3, data['r_component(1)'], label='Resistance from Circuit')
-plt.loglog(data['time']*1e3, data['resistance'], label='Computed resistance |v/i|')
+plt.semilogy(data['time']*1e3, data['r_component(1)'], label='Resistance from Circuit')
+plt.semilogy(data['time']*1e3, data['resistance'], label='Computed resistance |v/i|')
 plt.xlabel("Time (ms)")
 plt.ylabel("Resistance ($\Omega$)")
 plt.legend()
