@@ -156,7 +156,7 @@ Material 2
     Real Procedure "./Fortran90/therConductivity" "getTherConductivity"
   Density = Real 9010.0
   Heat Capacity = Variable Temperature
-    Real Piecewise Linear
+    Real
       Include ./DATA/cp_eq.dat
     End
 
@@ -189,13 +189,14 @@ Material 3
 
   !--- k of ARMCO (works with try.dat if we do not had the next include of the cp)
   Heat Conductivity = Variable Temperature
-    Real Piecewise Linear
+    Real
       Include "./DATA/try.dat"
     End
 
+!  Heat Capacity = 1
   !--- cp of 316LN (adding Include ..., it does not work)
   Heat Capacity = Variable Temperature
-    Real Piecewise Linear
+    Real
       Include "./DATA/try.dat"
     End
 End
@@ -208,7 +209,7 @@ Material 4
 
   !--- k of epoxy
   Heat Conductivity = Variable Temperature
-    Real Piecewise Linear
+    Real
       4.2 0.043933128
       10.2 0.057341786
       25.2 0.078578343
@@ -236,11 +237,11 @@ Material 4
 
   ! !--- This does not work:
   ! Heat Conductivity = Variable Temperature
-  !   Real Piecewise Linear
+  !   Real
   !     Include "./DATA/try.dat"
   !   End
   ! Heat Capacity = Variable Temperature
-  !   Real Piecewise Linear
+  !   Real
   !     Include "./DATA/try.dat"
   !   End
 End
