@@ -193,7 +193,6 @@ Material 3
       Include "./DATA/try.dat"
     End
 
-!  Heat Capacity = 1
   !--- cp of 316LN (adding Include ..., it does not work)
   Heat Capacity = Variable Temperature
     Real
@@ -207,43 +206,15 @@ Material 4
   Relative Permittivity = Real 1.0
   Density = Real 1800.0
 
-  !--- k of epoxy
+  !--- This does not work:
   Heat Conductivity = Variable Temperature
     Real
-      4.2 0.043933128
-      10.2 0.057341786
-      25.2 0.078578343
-      50.2 0.10757351
-      100.2 0.14699653
-      150.2 0.17037609
-      200.2 0.18516623
-      250.2 0.19509355
-      299.7 0.20200972
+      Include "./DATA/try.dat"
     End
-
-  !--- cp of epoxy
   Heat Capacity = Variable Temperature
-    Real Linear
-      4.2 0.11956382
-      10 0.436995
-      25 1.6314262
-      50 4.3361371
-      100 11.430794
-      150 20.109446
-      200 30.005253
-      250 40.916062
-      300 52.709829
+    Real
+      Include "./DATA/try.dat"
     End
-
-  ! !--- This does not work:
-  ! Heat Conductivity = Variable Temperature
-  !   Real
-  !     Include "./DATA/try.dat"
-  !   End
-  ! Heat Capacity = Variable Temperature
-  !   Real
-  !     Include "./DATA/try.dat"
-  !   End
 End
 
 
