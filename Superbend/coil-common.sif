@@ -159,8 +159,13 @@ Material 2
 
   Density = Real 9010.0
   Heat Capacity = Variable Temperature
+<<<<<<< HEAD
     Real Piecewise Linear
       Include "./DATA/cp_eq.dat"
+=======
+    Real
+      Include ./DATA/cp_eq.dat
+>>>>>>> 56ceb01a48873cd8fda2c2eb4f92fb5af4045bca
     End
 
   !--- Parameters of superconducting wire and coil
@@ -193,13 +198,21 @@ Material 3
   !--- Real means: Real Piecewise Linear
   Heat Conductivity = Variable Temperature
     Real
+<<<<<<< HEAD
       Include "./DATA/k_T_armco.dat"
+=======
+      Include "./DATA/try.dat"
+>>>>>>> 56ceb01a48873cd8fda2c2eb4f92fb5af4045bca
     End
 
   Density = Real 7860.0
   Heat Capacity = Variable Temperature
     Real
+<<<<<<< HEAD
       Include "./DATA/cp_T_316LN.dat"
+=======
+      Include "./DATA/try.dat"
+>>>>>>> 56ceb01a48873cd8fda2c2eb4f92fb5af4045bca
     End
 End
 
@@ -208,9 +221,10 @@ Material 4
   Relative Permeability = Real 1.0
   Relative Permittivity = Real 1.0
 
-  !--- k of epoxy
+  !--- This does not work:
   Heat Conductivity = Variable Temperature
     Real
+<<<<<<< HEAD
       Include "./DATA/k_T_epoxy.dat"
     End
 
@@ -219,6 +233,13 @@ Material 4
   Heat Capacity = Variable Temperature
     Real
       Include "./DATA/cp_T_epoxy.dat"
+=======
+      Include "./DATA/try.dat"
+    End
+  Heat Capacity = Variable Temperature
+    Real
+      Include "./DATA/try.dat"
+>>>>>>> 56ceb01a48873cd8fda2c2eb4f92fb5af4045bca
     End
 End
 
