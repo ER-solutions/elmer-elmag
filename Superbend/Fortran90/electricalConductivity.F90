@@ -97,7 +97,7 @@ FUNCTION getElectricalConductivity(Model, n, arg) RESULT(S)
     IF (visu) THEN
       PRINT *, "*** NO ELECTRICAL RESISTANCE ***"
     END IF
-    S = 1.0e37 ! close to largest value in 32 bit system (1.7e38)
+    S = 1.0e12 ! 1.0e37 ! close to largest value in 32 bit system (1.7e38)
   ! Current-sharing model
   ELSE IF (( T >= Tcs) .AND. (T < Tcm0 )) THEN
     IF (visu) THEN

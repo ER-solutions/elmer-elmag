@@ -247,20 +247,20 @@ FUNCTION getDissipation(Model, n, arg) RESULT(G)
       INTEGER :: n
       REAL(KIND=dp) :: tt
       REAL(KIND=dp) :: X, Y, Z, t_ini_d, Dt_d, Qd, Qg
-      REAL(KIND=dp) :: R_d, x_d, y_d, z_d, d
+      REAL(KIND=dp) :: R_dist, x_d, y_d, z_d, d
 
       ! Parameters needed inside the function
       TYPE(ValueList_t), POINTER :: bfList
       bfList => getbodyforce()
       ! Value of the dissipation in the disturbance (W/kg)
-      Qd = ListGetConstReal(bfList, 'Heat Disturbance', gotIt)
+      Qd = ListGetConstReal(bfList, 'Disturbance Specific Power', gotIt)
       IF ( .NOT. gotIt ) THEN
-        CALL Warn('getDisturbance', 'Heat Disturbance not found')
+        CALL Warn('getDisturbance', 'Disturbance Specific Power not found')
       END IF
       ! Initial time of the disturbance
-      t_ini_d = ListGetConstReal(bfList, 'Heat Disturbance Initial Time', gotIt)
+      t_ini_d = ListGetConstReal(bfList, 'Disturbance Initial Time', gotIt)
       IF ( .NOT. gotIt ) THEN
-        CALL Warn('getDisturbance', 'Heat Disturbance Initial Time not found')
+        CALL Warn('getDisturbance', 'Disturbance Initial Time not found')
       END IF
       ! Time duration of the disturbance
       Dt_d = ListGetConstReal(bfList, 'Disturbance Duration', gotIt)
@@ -282,7 +282,7 @@ FUNCTION getDissipation(Model, n, arg) RESULT(G)
       END IF
       ! Dimension of the spherical disturbance
       ! of the order of the length of geometry over number of elements
-      R_d = ListGetConstReal(bfList, 'Disturbance Size', gotIt)
+      R_dist = ListGetConstReal(bfList, 'Disturbance Size', gotIt)
       IF ( .NOT. gotIt ) THEN
         CALL Warn('getDisturbance', 'Disturbance Size not found')
       END IF
@@ -298,7 +298,7 @@ FUNCTION getDissipation(Model, n, arg) RESULT(G)
       !!! Need to check if the mesh is fine enough otherwise the temperature is psuriously diffused over the mesh!
 
       Qg = 0.0D00
-      IF ((d <= R_d) .AND. (tt > t_ini_d) .AND. (tt < (t_ini_d+Dt_d))) THEN
+      IF ((d <= R_dist) .AND. (tt > t_ini_d) .AND. (tt < (t_ini_d+Dt_d))) THEN
         Qg = Qd
       END IF
     END FUNCTION getQd

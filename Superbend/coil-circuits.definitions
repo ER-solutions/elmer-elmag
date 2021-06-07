@@ -1,6 +1,11 @@
+
+! Test case: Eelis Takala, Frederic Trillaud
+! Original date: May 2021
+! eelis.takala@gmail.com, ftrillaudp@gmail.com
+
 $ Circuits = 2
 
-! ------------------------ Circuit 1 ------------------------
+! ------------------------ Circuit 1 -------------------
 ! Define variable count and initialize circuit matrices.
 $ C.1.perm = zeros(8)
 !$ C.1.perm(0) = 0
@@ -28,7 +33,7 @@ $ C.1.name.6 = "v_S1"
 $ C.1.name.7 = "i_d1"
 $ C.1.name.8 = "v_d1"
 
-!!! Define sources (Body Force) !!!
+!!! Define sources (Body Force 1) !!!
 !----------------------------------
 $ C.1.source.5 = "IS1"
 
@@ -67,7 +72,7 @@ $ C.1.B(7,6) = -Rd1
 $ C.1.B(7,7) = 1
 
 
-! ------------------------ Circuit 2 ------------------------
+! ------------------------ Circuit 2 -------------------
 ! Define variable count and initialize circuit matrices.
 $ C.2.perm = zeros(8)
 !$ C.2.perm(0) = 0
@@ -95,7 +100,7 @@ $ C.2.name.6 = "v_S2"
 $ C.2.name.7 = "i_d2"
 $ C.2.name.8 = "v_d2"
 
-!!! Define sources (Body Force) !!!
+!!! Define sources (Body Force 1) !!!
 !----------------------------------
 $ C.2.source.5 = "IS2"
 
