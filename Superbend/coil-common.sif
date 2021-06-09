@@ -316,7 +316,7 @@ Solver 3  !---- MagnetoDynamics, WhitneyAVSolver: A-V solver
    !--- Solution circuit:
    Linear System Solver = Iterative
    Linear System Iterative Method = BicgstabL
-   BicgstabL polynomial degree = 6
+   BicgstabL polynomial degree = 10
    Linear System Preconditioning = circuit ! inversion of circuit matrix
    Linear System Convergence Tolerance = 1.0e-8 ! add to drop the tolerance
    Linear System Max Iterations = 3000
