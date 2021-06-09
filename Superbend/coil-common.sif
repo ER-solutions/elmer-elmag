@@ -159,7 +159,7 @@ Material 2
 
   Density = Real 9010.0
   Heat Capacity = Variable Temperature
-    Real Piecewise Linear
+    Real
       Include "./DATA/cp_eq.dat"
     End
 
@@ -301,23 +301,25 @@ Solver 3  !---- MagnetoDynamics, WhitneyAVSolver: A-V solver
    Procedure = "MagnetoDynamics" "WhitneyAVSolver"
 
    Nonlinear Pre Solvers(1) = 2 ! run the circuit solver iteratively
-   Nonlinear Post Solvers(1) = 4 ! postprocess the circuit outputs
+   Post Solvers(1) = 4 ! postprocess the circuit outputs
 
    Steady State Convergence Tolerance = 1.0e-6
 
    Nonlinear System Convergence Tolerance = 1e-6
-   Nonlinear System Max Iterations = 25
-   Nonlinear System Newton After Iterations = 5 ! change from Picard to Newton after 5 iterations
+   Nonlinear System Max Iterations = 50
+   !Nonlinear System Newton After Iterations = 5 ! change from Picard to Newton after 5 iterations
    Nonlinear System Newton After Tolerance = 1.0e-6
    Nonlinear System Relaxation Factor = 0.98
 
    Export Lagrange Multiplier = Logical True
+
+   !--- Solution circuit:
    Linear System Solver = Iterative
    Linear System Iterative Method = BicgstabL
    BicgstabL polynomial degree = 6
-   Linear System Preconditioning = none ! converge quicker without
-   Linear System Convergence Tolerance = 1.0e-3 ! add to drop the tolerance
-   Linear System Max Iterations = 2000
+   Linear System Preconditioning = circuit ! inversion of circuit matrix
+   Linear System Convergence Tolerance = 1.0e-8 ! add to drop the tolerance
+   Linear System Max Iterations = 3000
    Linear System Residual Output = 20
 End
 
@@ -401,7 +403,7 @@ End
 
 !!! EQUATIONS !!!
 Equation 1
-  Name = "Multiphysics for inductors"
+  Name = "Multiphysics for solids"
   Active Solvers(10) = 1 2 3 4 5 6 7 8 9 10
   Heat Equation = Logical True
 End
