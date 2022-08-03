@@ -1,0 +1,7 @@
+! ----- names for bodies -----
+$ Material = 1
+$ Air = 2
+! ----- names for boundaries -----
+$ Boundary material = 3
+$ Boundary air = 4
+$ Fixed Temperature = 5

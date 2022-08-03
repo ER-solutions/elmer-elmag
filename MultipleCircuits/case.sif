@@ -13,7 +13,7 @@ End
 ! Parameters
 ! --- Coil area A, current density Je, Amper-turns NI = Je*A, current in strand I, number of turns N
 $ Ac = 0.0025
-$ Je = 1e8
+$ Je = 1e7
 
 !--- Coil 1 and 3:
 $ I1 = 50.0
@@ -188,7 +188,7 @@ Material 2
   Relative Permittivity = Real 1.0
 
   !--- Read into the circuit solver: computes the resistance as the sum of all the element contribution
-  Electric Conductivity = Real 0.1
+  ! Electric Conductivity = Real 0.1
 
   !--- Parameters of superconducting wire and coil
   Matrix Density = Real 8960.0

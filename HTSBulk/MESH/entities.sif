@@ -1,0 +1,22 @@
+!------ Skeleton for body section -----
+Body 1
+  Name = Material
+End
+
+Body 2
+  Name = Air
+End
+
+!------ Skeleton for boundary section -----
+Boundary Condition 1
+  Name = Boundary material
+End
+
+Boundary Condition 2
+  Name = Boundary air
+End
+
+Boundary Condition 3
+  Name = Fixed Temperature
+End
+
