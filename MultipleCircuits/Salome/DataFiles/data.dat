@@ -1,0 +1,11 @@
+$ scaling=0.001;
+$ coilWidth=0.05;
+$ coilThickness=0.05;
+$ coilInnerRadius=0.2;
+$ coilSeparation=0.0125;
+$ coil1Position_z=0.037500000000000006;
+$ coil2Position_z=-0.0625;
+$ coreRadius=0.25;
+$ coreHeight=0.22750000000000004;
+$ corePosition_z=-0.11375000000000002;
+$ airRadius=0.5;
