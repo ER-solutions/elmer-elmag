@@ -34,7 +34,7 @@ SUBROUTINE getCheckMeshSizeSolver(Model)
     CALL Warn('getDisturbance', 'Disturbance Size not found')
   END IF
 
-  visu = .TRUE.
+  visu = .FALSE.
 
   IF (GetTimestep() == 1) THEN ! to make sure, it runs only once
     !!! Cycle over the nodes
