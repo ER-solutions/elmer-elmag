@@ -6,7 +6,7 @@ bulkRadius = {0.0125, Name "Input/0Geometry/0Bulk radius (m)"},
 bulkHeight = {0.01, Name "Input/0Geometry/1Bulk height (m)"},
 materialMeshSize = {0.1, Name "Input/1Mesh/0Mesh size of material (-)"},
 airMeshSize = {0.2, Name "Input/1Mesh/1Mesh size of air (-)"},
-flag_sphereBND = {1, Choices{0,1}, Name "Input/1Mesh/2Sphere boundary {yes = 1, no = 0}"}
+flag_sphereBND = {0, Choices{0,1}, Name "Input/1Mesh/2Sphere boundary {yes = 1, no = 0}"}
 flag_mesh = {0, Choices{0,1}, Name "Input/1Mesh/2Progressive mesh {yes = 1, no = 0}"}
 ];
 airRadius = 3*bulkRadius;
