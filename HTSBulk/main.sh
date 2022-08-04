@@ -13,7 +13,8 @@ GMSH="/opt/onelab-Linux64/gmsh"
 
 ### Get file name of the *.unv mesh
 #name=$(find . -type f -name "*.unv")
-name=$(find . -type f -name "*.msh")
+name=$(find ./Gmsh -type f -name "assembly.msh")
+cp -v ./Gmsh/$name ./
 ### remove the extension for multiple purposes
 filename=$(basename $name | cut -d. -f1)
 
@@ -25,8 +26,9 @@ ElmerGrid 14 2 $filename.msh -out MESH --autoclean
 echo " "
 echo "*** Computation solution: ElmerSolver ***"
 rm log.txt
+bash compileUDF.sh
 #$GMSH gmshGUI.py &
-ElmerSolver case.sif
+ElmerSolver case.sif | tee -a log.txt
 ### Save the stdout in log.txt
 #ElmerSolver case.sif | tee log.txt
 ### Server run

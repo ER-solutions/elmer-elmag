@@ -6,9 +6,13 @@ bulkRadius = {0.0125, Name "Input/0Geometry/0Bulk radius (m)"},
 bulkHeight = {0.01, Name "Input/0Geometry/1Bulk height (m)"},
 materialMeshSize = {0.1, Name "Input/1Mesh/0Mesh size of material (-)"},
 airMeshSize = {0.2, Name "Input/1Mesh/1Mesh size of air (-)"},
+flag_sphereBND = {1, Choices{0,1}, Name "Input/1Mesh/2Sphere boundary {yes = 1, no = 0}"}
 flag_mesh = {0, Choices{0,1}, Name "Input/1Mesh/2Progressive mesh {yes = 1, no = 0}"}
 ];
-airRadius = 2.15*bulkRadius;
+airRadius = 3*bulkRadius;
+If (flag_sphereBND == 1)
+ airHeight = 4*bulkHeight;
+EndIf
 If (flag_mesh == 1)
   materialMeshSize = 0.04;
   airMeshSize = 6;
@@ -51,11 +55,19 @@ verteces_1() = PointsOf{Line{edges_1()};};
 Characteristic Length{verteces_1()} = lc_1;
 
 // Air:
-Sphere(2) = {0., 0., 0., airRadius};
-surfaces_2() = Boundary{Volume{2};};
-edges_2() = Boundary{Surface{surfaces_2()};};
-verteces_2() = PointsOf{Line{edges_2()};};
-Characteristic Length{verteces_2()} = lc_2;
+If (flag_sphereBND == 1)
+ Sphere(2) = {0., 0., 0., airRadius};
+ surfaces_2() = Boundary{Volume{2};};
+ edges_2() = Boundary{Surface{surfaces_2()};};
+ verteces_2() = PointsOf{Line{edges_2()};};
+ Characteristic Length{verteces_2()} = lc_2;
+Else
+ Cylinder(2) = {0., 0., (-1)*0.5*airHeight, 0., 0., airHeight, airRadius};
+ surfaces_2() = Boundary{Volume{2};};
+ edges_2() = Boundary{Surface{surfaces_2()};};
+ verteces_2() = PointsOf{Line{edges_2()};};
+ Characteristic Length{verteces_2()} = lc_2;
+EndIf
 // Substract tool (1) from object (2)
 volumeAir = BooleanDifference { Volume{2}; Delete; }{ Volume{1}; };
 
@@ -66,7 +78,11 @@ Physical Volume("Air", airID) = {volumeAir};
 Color Blue {Volume {volumeAir};}
 // For ElmerGrid, we cannot have the same submesh in different Physical Surface.
 Physical Surface("Boundary material", materialBoundaryID) = {surfaces_1(0), surfaces_1(2)};
-Physical Surface("Boundary air", airBoundaryID) = {surfaces_2(0)};
+If (flag_sphereBND == 1)
+ Physical Surface("Boundary air", airBoundaryID) = {surfaces_2(0)};
+Else
+ Physical Surface("Boundary air", airBoundaryID) = {surfaces_2()};
+EndIf
 Physical Surface("Fixed Temperature", fixedTemperatureID) = {surfaces_1(1)};
 
 /// --- Refinement of mesh ---
