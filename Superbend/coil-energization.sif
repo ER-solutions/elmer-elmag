@@ -1,11 +1,44 @@
 ! Ramping up current in coil (energization)
 ! Test case: Eelis Takala, Frederic Trillaud
 ! Original date: May 2021
+! Last modification: August 2022
 ! eelis.takala@gmail.com, ftrillaudp@gmail.com
 
 
+!!! PARAMETERS !!!
 Include dataElmer.dat
-Include coil-circuits.definitions
+
+!--- Racetracks:
+$ I1 = 153.0
+!--- Circular coils:
+$ I2 = 82.0
+!--- Ramp rate in A/s
+$ ramp_rate1 = 1000.0
+$ ramp_rate2 = 1000.0
+!--- Time to complete the ramp
+$ ramp_time1 = I1/ramp_rate1
+$ ramp_time2 = I2/ramp_rate2
+!--- Plateau after ramp
+$ plateau = 10.0
+!--- Number of time steps
+$ nof_tstp_1 = 10.0
+$ nof_tstp_2 = 100.0
+!--- Size of time steps
+$ sz_tstp_a = ramp_time1 / nof_tstp_1
+$ sz_tstp_b = ramp_time2 / nof_tstp_1
+$ sz_tstp_1 = min(sz_tstp_a sz_tstp_b)
+$ sz_tstp_2 = plateau / nof_tstp_2
+
+!--- Electrical circuit
+$ Rcl1 = 0.01
+$ Rdp1 = 3.0
+$ Rcl2 = 0.01
+$ Rdp2 = 3.0
+
+
+!!! INCLUDE !!!
+!Include coil-circuits.definitions
+Include circuits.definitions
 Include coil-common.sif
 
 
@@ -15,30 +48,11 @@ Simulation
   Coordinate Mapping(3) = 1 2 3
 
   Simulation Type = String "Transient"
-  Steady State Max Iterations = 1
+  Steady State Max Iterations = 6
+  Steady State Min Iterations = 2
 
   TimeStepping Method = BDF
   BDF Order = 1
-
-  !--- Racetracks:
-  $ I1 = 153.0
-  !--- Circular coils:
-  $ I2 = 82.0
-  !--- Ramp rate in A/s
-  $ ramp_rate = 1000.0
-  !--- Time to complete the ramp
-  $ ramp_time1 = I1/ramp_rate
-  $ ramp_time2 = I2/ramp_rate
-  !--- Plateau after ramp
-  $ plateau = 10.0
-  !--- Number of time steps
-  $ nof_tstp_1 = 10.0
-  $ nof_tstp_2 = 100.0
-  !--- Size of time steps
-  $ sz_tstp_a = ramp_time1 / nof_tstp_1
-  $ sz_tstp_b = ramp_time2 / nof_tstp_1
-  $ sz_tstp_1 = min(sz_tstp_a sz_tstp_b)
-  $ sz_tstp_2 = plateau / nof_tstp_2
 
   Timestep Sizes(2) = Real $ sz_tstp_1 sz_tstp_2
   TimeStep Intervals(2) = Integer $ nof_tstp_1  nof_tstp_2
@@ -55,12 +69,10 @@ Body Force 1
   Name = "Sources"
   !--- Body Force 1 is the only place to define the sources for all the electric circuits
   !--- Racetracks 1 and 2
-  IS1 = Variable time; Real MATC "if (tx <= ramp_time1) (ramp_rate*tx); else I1;"
+  IS1_Source = Variable time; Real MATC "if (tx <= ramp_time1) (ramp_rate1*tx); else I1;"
   !--- Circular coils 3 and 4
-  IS2 = Variable time; Real MATC "if (tx <= ramp_time2) (ramp_rate*tx); else I2;"
-End
+  IS2_Source = Variable time; Real MATC "if (tx <= ramp_time2) (ramp_rate2*tx); else I2;"
 
-Body Force 2
   Name = "Quench"
   !--- We split into body force 1 and 2, putting the heat source for the quench in the second even though it is not necessary. More readable
   !--- Parameters to be passed to the procedure: dissipation.f90
@@ -80,6 +92,27 @@ Body Force 2
   Heat Source = Variable Time, Temperature, Magnetic Flux Density e, Current Density e
     Real Procedure "./Fortran90/dissipation" "getDissipation"
 End
+
+! Body Force 2
+!   Name = "Quench"
+!   !--- We split into body force 1 and 2, putting the heat source for the quench in the second even though it is not necessary. More readable
+!   !--- Parameters to be passed to the procedure: dissipation.f90
+!   !--- Dimension of the spherical disturbance (depends on local mesh size)
+!   Disturbance Size = Real $ racetrackWidth/5
+!   !--- Center of the spherical disturbance
+!   Disturbance X Center = Real $ (-0.5*(racetrackLength+racetrackWidth)-racetrackInnerRadius)
+!   Disturbance Y Center = Real 0.0
+!   Disturbance Z Center = Real $ (-0.5*(gap+racetrackThickness))
+!   !--- Heat disturbance in [W/kg]
+!   Disturbance Specific Power = Real 250.0
+!   !--- Initial time of the disturbance
+!   Disturbance Initial Time = Real $ (ramp_time1+(plateau/10))
+!   !--- Duration of the disturbance
+!   Disturbance Duration = Real 2.0
+!
+!   Heat Source = Variable Time, Temperature, Magnetic Flux Density e, Current Density e
+!     Real Procedure "./Fortran90/dissipation" "getDissipation"
+! End
 
 
 !!! SOLVERS !!!

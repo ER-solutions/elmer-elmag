@@ -1,0 +1,255 @@
+! -----------------------------------------------------------------------------
+! ElmerFEM Circuit Generated: August 04, 2022
+! -----------------------------------------------------------------------------
+
+! -----------------------------------------------------------------------------
+! Number of Circuits in Model
+! -----------------------------------------------------------------------------
+$ Circuits = 2
+
+! -----------------------------------------------------------------------------
+! Parameters
+! -----------------------------------------------------------------------------
+
+! General Parameters 
+$ IS1 = 1.0
+$ Rcl1 = 1.0
+$ Rdp1 = 1.0
+
+! Parameters in Component 1: Coil1
+$ N_Coil1 = 1	 ! Number of Turns
+$ R_Coil1 = 0	 ! Coil Resistance
+$ Ns_Coil1 = 1	 ! Sector/Symmetry Coefficient (e.g. 4 is 1/4 of the domain)
+$ Ae_Coil1 = 0.0025 	 ! Electrode Area (dummy for now change as required)
+! Parameters in Component 2: Coil2
+$ N_Coil2 = 1	 ! Number of Turns
+$ R_Coil2 = 0	 ! Coil Resistance
+$ Ns_Coil2 = 1	 ! Sector/Symmetry Coefficient (e.g. 4 is 1/4 of the domain)
+$ Ae_Coil2 = 0.0025 	 ! Electrode Area (dummy for now change as required)
+
+! -----------------------------------------------------------------------------
+! Matrix Size Declaration and Matrix Initialization
+! -----------------------------------------------------------------------------
+$ C.1.variables = 13
+$ C.1.perm = zeros(C.1.variables)
+$ C.1.A = zeros(C.1.variables,C.1.variables)
+$ C.1.B = zeros(C.1.variables,C.1.variables)
+
+! -----------------------------------------------------------------------------
+! Dof/Unknown Vector Definition
+! -----------------------------------------------------------------------------
+$ C.1.name.1 = "i_IS1"
+$ C.1.name.2 = "i_Rcl1"
+$ C.1.name.3 = "i_Rdp1"
+$ C.1.name.4 = "i_component(1)"
+$ C.1.name.5 = "i_component(2)"
+$ C.1.name.6 = "v_IS1"
+$ C.1.name.7 = "v_Rcl1"
+$ C.1.name.8 = "v_Rdp1"
+$ C.1.name.9 = "v_component(1)"
+$ C.1.name.10 = "v_component(2)"
+$ C.1.name.11 = "u_2_circuit_1"
+$ C.1.name.12 = "u_3_circuit_1"
+$ C.1.name.13 = "u_4_circuit_1"
+
+! -----------------------------------------------------------------------------
+! Source Vector Definition
+! -----------------------------------------------------------------------------
+$ C.1.source.12 = "IS1_Source"
+
+! -----------------------------------------------------------------------------
+! KCL Equations
+! -----------------------------------------------------------------------------
+$ C.1.B(0,0) = -1
+$ C.1.B(0,1) = 1
+$ C.1.B(1,1) = -1
+$ C.1.B(1,2) = 1
+$ C.1.B(1,3) = 1
+$ C.1.B(2,3) = -1
+$ C.1.B(2,4) = 1
+
+! -----------------------------------------------------------------------------
+! KVL Equations
+! -----------------------------------------------------------------------------
+$ C.1.B(3,5) = 1
+$ C.1.B(3,10) = -1
+$ C.1.B(4,6) = -1
+$ C.1.B(4,10) = 1
+$ C.1.B(4,11) = -1
+$ C.1.B(5,7) = -1
+$ C.1.B(5,11) = 1
+$ C.1.B(6,8) = -1
+$ C.1.B(6,11) = 1
+$ C.1.B(6,12) = -1
+$ C.1.B(7,9) = -1
+$ C.1.B(7,12) = 1
+
+! -----------------------------------------------------------------------------
+! Component Equations
+! -----------------------------------------------------------------------------
+$ C.1.B(10,2) = Rdp1
+$ C.1.B(10,7) = -1
+$ C.1.B(11,0) = 1
+$ C.1.B(12,1) = Rcl1
+$ C.1.B(12,6) = -1
+
+
+! -----------------------------------------------------------------------------
+! Additions in SIF file
+! -----------------------------------------------------------------------------
+Component 1
+  Name = "Coil1"
+  Master Bodies Name = Coil1
+  Coil Type = "Stranded"
+  Number of Turns = Real $ N_Coil1
+  Resistance = Real $ R_Coil1
+ 
+  ! Additions for 3D Coil
+  Coil Use W Vector = Logical True
+  W Vector Variable Name = String CoilCurrent e
+  Electrode Area = Real $ Ae_Coil1
+End 
+
+Component 2
+  Name = "Coil2"
+  Master Bodies Name = Coil2
+  Coil Type = "Stranded"
+  Number of Turns = Real $ N_Coil2
+  Resistance = Real $ R_Coil2
+ 
+  ! Additions for 3D Coil
+  Coil Use W Vector = Logical True
+  W Vector Variable Name = String CoilCurrent e
+  Electrode Area = Real $ Ae_Coil2
+End 
+
+! -----------------------------------------------------------------------------
+! Parameters
+! -----------------------------------------------------------------------------
+
+! General Parameters 
+$ IS2 = 1.0
+$ Rcl2 = 1.0
+$ Rdp2 = 1.0
+
+! Parameters in Component 3: Coil3
+$ N_Coil3 = 1	 ! Number of Turns
+$ R_Coil3 = 0	 ! Coil Resistance
+$ Ns_Coil3 = 1	 ! Sector/Symmetry Coefficient (e.g. 4 is 1/4 of the domain)
+$ Ae_Coil3 = 0.0025 	 ! Electrode Area (dummy for now change as required)
+! Parameters in Component 4: Coil4
+$ N_Coil4 = 1	 ! Number of Turns
+$ R_Coil4 = 0	 ! Coil Resistance
+$ Ns_Coil4 = 1	 ! Sector/Symmetry Coefficient (e.g. 4 is 1/4 of the domain)
+$ Ae_Coil4 = 0.0025 	 ! Electrode Area (dummy for now change as required)
+
+! -----------------------------------------------------------------------------
+! Matrix Size Declaration and Matrix Initialization
+! -----------------------------------------------------------------------------
+$ C.2.variables = 13
+$ C.2.perm = zeros(C.2.variables)
+$ C.2.A = zeros(C.2.variables,C.2.variables)
+$ C.2.B = zeros(C.2.variables,C.2.variables)
+
+! -----------------------------------------------------------------------------
+! Dof/Unknown Vector Definition
+! -----------------------------------------------------------------------------
+$ C.2.name.1 = "i_IS2"
+$ C.2.name.2 = "i_Rcl2"
+$ C.2.name.3 = "i_Rdp2"
+$ C.2.name.4 = "i_component(3)"
+$ C.2.name.5 = "i_component(4)"
+$ C.2.name.6 = "v_IS2"
+$ C.2.name.7 = "v_Rcl2"
+$ C.2.name.8 = "v_Rdp2"
+$ C.2.name.9 = "v_component(3)"
+$ C.2.name.10 = "v_component(4)"
+$ C.2.name.11 = "u_2_circuit_2"
+$ C.2.name.12 = "u_3_circuit_2"
+$ C.2.name.13 = "u_4_circuit_2"
+
+! -----------------------------------------------------------------------------
+! Source Vector Definition
+! -----------------------------------------------------------------------------
+$ C.2.source.12 = "IS2_Source"
+
+! -----------------------------------------------------------------------------
+! KCL Equations
+! -----------------------------------------------------------------------------
+$ C.2.B(0,0) = -1
+$ C.2.B(0,1) = 1
+$ C.2.B(1,1) = -1
+$ C.2.B(1,2) = 1
+$ C.2.B(1,3) = 1
+$ C.2.B(2,3) = -1
+$ C.2.B(2,4) = 1
+
+! -----------------------------------------------------------------------------
+! KVL Equations
+! -----------------------------------------------------------------------------
+$ C.2.B(3,5) = 1
+$ C.2.B(3,10) = -1
+$ C.2.B(4,6) = -1
+$ C.2.B(4,10) = 1
+$ C.2.B(4,11) = -1
+$ C.2.B(5,7) = -1
+$ C.2.B(5,11) = 1
+$ C.2.B(6,8) = -1
+$ C.2.B(6,11) = 1
+$ C.2.B(6,12) = -1
+$ C.2.B(7,9) = -1
+$ C.2.B(7,12) = 1
+
+! -----------------------------------------------------------------------------
+! Component Equations
+! -----------------------------------------------------------------------------
+$ C.2.B(10,2) = Rdp2
+$ C.2.B(10,7) = -1
+$ C.2.B(11,0) = 1
+$ C.2.B(12,1) = Rcl2
+$ C.2.B(12,6) = -1
+
+
+! -----------------------------------------------------------------------------
+! Additions in SIF file
+! -----------------------------------------------------------------------------
+Component 3
+  Name = "Coil3"
+  Master Bodies Name = Coil3
+  Coil Type = "Stranded"
+  Number of Turns = Real $ N_Coil3
+  Resistance = Real $ R_Coil3
+ 
+  ! Additions for 3D Coil
+  Coil Use W Vector = Logical True
+  W Vector Variable Name = String CoilCurrent e
+  Electrode Area = Real $ Ae_Coil3
+End 
+
+Component 4
+  Name = "Coil4"
+  Master Bodies Name = Coil4
+  Coil Type = "Stranded"
+  Number of Turns = Real $ N_Coil4
+  Resistance = Real $ R_Coil4
+ 
+  ! Additions for 3D Coil
+  Coil Use W Vector = Logical True
+  W Vector Variable Name = String CoilCurrent e
+  Electrode Area = Real $ Ae_Coil4
+End 
+
+! -----------------------------------------------------------------------------
+! Sources in SIF 
+! -----------------------------------------------------------------------------
+
+Body Force 1
+  IS1_Source = Variable "time" 
+  	 Real MATC "IS1"
+  IS2_Source = Variable "time" 
+  	 Real MATC "IS2"
+End
+
+! -----------------------------------------------------------------------------
+! End of Circuit
+! -----------------------------------------------------------------------------

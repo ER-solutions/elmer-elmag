@@ -28,6 +28,7 @@ Body 1
   Equation = 1
   Material = 2
   Initial Condition = 1
+  Body Force = 1
 End
 
 Body 2
@@ -35,8 +36,8 @@ Body 2
   Target Bodies(1) = 2
   Equation = 1
   Material = 2
-  Body Force = 2
   Initial Condition = 1
+  Body Force = 1
 End
 
 Body 3
@@ -45,6 +46,7 @@ Body 3
   Equation = 1
   Material = 2
   Initial Condition = 1
+  Body Force = 1
 End
 
 Body 4
@@ -53,6 +55,7 @@ Body 4
   Equation = 1
   Material = 2
   Initial Condition = 1
+  Body Force = 1
 End
 
 Body 5
@@ -91,6 +94,7 @@ Component 1
   W Vector Variable Name = String "CoilCurrent e"
   Number of Turns = Real 1710
   Electrode Area = Real $ racetrackWidth*racetrackThickness
+  Resistance = Real 0.0
   Fit Coil = Logical False
   Coil Normal(3) = Real 0.0 0.0 1.0
   Coil Center(3) = Real 0.0 0.0 $ 0.5*(racetrackThickness+gap)
@@ -106,6 +110,7 @@ Component 2
   W Vector Variable Name = String "CoilCurrent e"
   Number of Turns = Real 1710
   Electrode Area = Real $ racetrackWidth*racetrackThickness
+  Resistance = Real 0.0
   Fit Coil = Logical False
   Coil Normal(3) = Real 0.0 0.0 1.0
   Coil Center(3) = Real 0.0 0.0 $ -0.5*(racetrackThickness+gap)
@@ -121,6 +126,7 @@ Component 3
   W Vector Variable Name = String "CoilCurrent e"
   Number of Turns = Real 696
   Electrode Area = Real $ coilWidth*coilThickness
+  Resistance = Real 0.0
   Fit Coil = Logical False
   Coil Normal(3) = Real 0.0 0.0 1.0
   Coil Center(3) = Real 0.0 0.0 $ 0.5*(coilThickness+gap)
@@ -136,6 +142,7 @@ Component 4
   W Vector Variable Name = String "CoilCurrent e"
   Number of Turns = Real 696
   Electrode Area = Real $ coilWidth*coilThickness
+  Resistance = Real 0.0
   Fit Coil = Logical False
   Coil Normal(3) = Real 0.0 0.0 1.0
   Coil Center(3) = Real 0.0 0.0 $ -0.5*(coilThickness+gap)
@@ -236,8 +243,8 @@ Boundary Condition 1
   Name = "Air boundary"
   Target Boundaries(1) = 15
   A {e} = real 0
-  A = real 0
-  Jfix = real 0.0
+  ! A = real 0
+  ! Jfix = real 0.0
 End
 
 Boundary Condition 2

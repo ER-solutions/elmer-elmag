@@ -4,8 +4,39 @@
 ! eelis.takala@gmail.com, ftrillaudp@gmail.com
 
 
+!!! PARAMETERS !!!
 Include dataElmer.dat
-Include coil-circuits.definitions
+
+!--- Racetracks:
+$ I1 = 153
+!--- Circular coils:
+$ I2 = 82
+!--- Ramp rate in A/s
+$ ramp_rate = 10
+!--- Time to complete the ramp
+$ ramp_time1 = I1/ramp_rate
+$ ramp_time2 = I2/ramp_rate
+!--- Plateau after ramp
+$ plateau = 100
+!--- Number of time steps
+$ nof_tstp_1 = 10
+$ nof_tstp_2 = 100
+!--- Size of time steps
+$ sz_tstp_a = ramp_time1 / nof_tstp_1
+$ sz_tstp_b = ramp_time2 / nof_tstp_1
+$ sz_tstp_1 = min(sz_tstp_a sz_tstp_b)
+$ sz_tstp_2 = plateau / nof_tstp_2
+
+!--- Electrical circuit
+$ Rcl1 = 0.01
+$ Rdp1 = 3.0
+$ Rcl2 = 0.01
+$ Rdp2 = 3.0
+
+
+!!! INCLUDE !!!
+!Include coil-circuits.definitions
+Include circuits.definitions
 Include coil-common.sif
 
 
@@ -14,30 +45,11 @@ Simulation
   Coordinate System = String "Cartesian 3D"
   Coordinate Mapping(3) = 1 2 3
   Simulation Type = String "Transient"
-  Steady State Max Iterations = 1
+  Steady State Max Iterations = 6
+  Steady State Min Iterations = 2
 
   TimeStepping Method = BDF
   BDF Order = 1
-
-  !--- Racetracks:
-  $ I1 = 153
-  !--- Circular coils:
-  $ I2 = 82
-  !--- Ramp rate in A/s
-  $ ramp_rate = 10
-  !--- Time to complete the ramp
-  $ ramp_time1 = I1/ramp_rate
-  $ ramp_time2 = I2/ramp_rate
-  !--- Plateau after ramp
-  $ plateau = 100
-  !--- Number of time steps
-  $ nof_tstp_1 = 10
-  $ nof_tstp_2 = 100
-  !--- Size of time steps
-  $ sz_tstp_a = ramp_time1 / nof_tstp_1
-  $ sz_tstp_b = ramp_time2 / nof_tstp_1
-  $ sz_tstp_1 = min(sz_tstp_a sz_tstp_b)
-  $ sz_tstp_2 = plateau / nof_tstp_2
 
   Timestep Sizes(2) = Real $ sz_tstp_1 sz_tstp_2
   TimeStep Intervals(2) = Integer $ nof_tstp_1  nof_tstp_2
