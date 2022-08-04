@@ -10,9 +10,7 @@ flag_sphereBND = {0, Choices{0,1}, Name "Input/1Mesh/2Sphere boundary {yes = 1, 
 flag_mesh = {0, Choices{0,1}, Name "Input/1Mesh/2Progressive mesh {yes = 1, no = 0}"}
 ];
 airRadius = 3*bulkRadius;
-If (flag_sphereBND == 1)
- airHeight = 4*bulkHeight;
-EndIf
+airHeight = 4*bulkHeight;
 If (flag_mesh == 1)
   materialMeshSize = 0.04;
   airMeshSize = 6;
