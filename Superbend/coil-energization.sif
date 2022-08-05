@@ -8,8 +8,6 @@
 !!! PARAMETERS !!!
 Include dataElmer.dat
 
-!--- Operating temperature
-$ Top = 4.5
 !--- Racetracks:
 $ I1 = 153.0
 !--- Circular coils:
@@ -50,8 +48,8 @@ Simulation
   Coordinate Mapping(3) = 1 2 3
 
   Simulation Type = String "Transient"
-  Steady State Max Iterations = 1
-  Steady State Min Iterations = 1
+  Steady State Max Iterations = 6
+  Steady State Min Iterations = 2
 
   TimeStepping Method = BDF
   BDF Order = 1
@@ -75,24 +73,24 @@ Body Force 1
   !--- Circular coils 3 and 4
   IS2_Source = Variable time; Real MATC "if (tx <= ramp_time2) (ramp_rate2*tx); else I2;"
 
-  ! Name = "Quench"
-  ! !--- We split into body force 1 and 2, putting the heat source for the quench in the second even though it is not necessary. More readable
-  ! !--- Parameters to be passed to the procedure: dissipation.f90
-  ! !--- Dimension of the spherical disturbance (depends on local mesh size)
-  ! Disturbance Size = Real $ racetrackWidth/5
-  ! !--- Center of the spherical disturbance
-  ! Disturbance X Center = Real $ (-0.5*(racetrackLength+racetrackWidth)-racetrackInnerRadius)
-  ! Disturbance Y Center = Real 0.0
-  ! Disturbance Z Center = Real $ (-0.5*(gap+racetrackThickness))
-  ! !--- Heat disturbance in [W/kg]
-  ! Disturbance Specific Power = Real 250.0
-  ! !--- Initial time of the disturbance
-  ! Disturbance Initial Time = Real $ (ramp_time1+(plateau/10))
-  ! !--- Duration of the disturbance
-  ! Disturbance Duration = Real 2.0
-  !
-  ! Heat Source = Variable Time, Temperature, Magnetic Flux Density e, Current Density e
-  !   Real Procedure "./Fortran90/dissipation" "getDissipation"
+  Name = "Quench"
+  !--- We split into body force 1 and 2, putting the heat source for the quench in the second even though it is not necessary. More readable
+  !--- Parameters to be passed to the procedure: dissipation.f90
+  !--- Dimension of the spherical disturbance (depends on local mesh size)
+  Disturbance Size = Real $ racetrackWidth/5
+  !--- Center of the spherical disturbance
+  Disturbance X Center = Real $ (-0.5*(racetrackLength+racetrackWidth)-racetrackInnerRadius)
+  Disturbance Y Center = Real 0.0
+  Disturbance Z Center = Real $ (-0.5*(gap+racetrackThickness))
+  !--- Heat disturbance in [W/kg]
+  Disturbance Specific Power = Real 250.0
+  !--- Initial time of the disturbance
+  Disturbance Initial Time = Real $ (ramp_time1+(plateau/10))
+  !--- Duration of the disturbance
+  Disturbance Duration = Real 2.0
+
+  Heat Source = Variable Time, Temperature, Magnetic Flux Density e, Current Density e
+    Real Procedure "./Fortran90/dissipation" "getDissipation"
 End
 
 ! Body Force 2
@@ -118,7 +116,7 @@ End
 
 
 !!! SOLVERS !!!
-Solver 6 !--- ResultOuputSolve, ResultOuputSolver: save computed fields
+Solver 9 !--- ResultOuputSolve, ResultOuputSolver: save computed fields
    Exec Solver = After timestep
    Equation = "ResultOutput"
    Procedure = "ResultOutputSolve" "ResultOutputSolver"
@@ -131,7 +129,7 @@ Solver 6 !--- ResultOuputSolve, ResultOuputSolver: save computed fields
    Save Geometry Ids = Logical True
 End
 
-Solver 7  !--- SaveData, SaveScalars: write circuit variables to file
+Solver 10  !--- SaveData, SaveScalars: write circuit variables to file
    Exec Solver = After timestep
    Equation = "sv"
    Procedure = "SaveData" "SaveScalars"

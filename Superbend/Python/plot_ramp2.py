@@ -8,9 +8,9 @@ data.columns = [line.split('res: ')[1].replace('\n','') for line in names_file.r
 
 print (data)
 plt.plot(data['time'], data['i_component(3)'], label='Coil 3')
-plt.plot(data['time'], data['i_component(4)'], label='Coil 4')
-plt.plot(data['time'], data['i_rdp2'], label='Dump Resistor')
-#plt.plot(data['time'], data['i_s2'], label='Source')
+plt.plot(data['time'], data['i_component(4)'], linestyle="dashed", label='Coil 4')
+plt.plot(data['time'], data['i_rdp2'], label='Dump Resistor 2')
+plt.plot(data['time'], data['i_is2'], label='Source')
 plt.legend()
-plt.savefig('./Python/ramp_coils.png')
+plt.savefig('./Python/ramp2.png')
 plt.show()

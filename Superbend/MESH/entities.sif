@@ -20,23 +20,55 @@ Body 5
 End
 
 Body 6
+  Name = straps
+End
+
+Body 7
   Name = air
 End
 
 !------ Skeleton for boundary section -----
 Boundary Condition 1
-  Name = airBoundary
+  Name = racetrack1Boundary
 End
 
 Boundary Condition 2
-  Name = bnry9
+  Name = racetrack2Boundary
 End
 
 Boundary Condition 3
-  Name = bnry11
+  Name = coil1Boundary
 End
 
 Boundary Condition 4
-  Name = bc20
+  Name = coil2Boundary
+End
+
+Boundary Condition 5
+  Name = fixedTemperature4K
+End
+
+Boundary Condition 6
+  Name = fixedTemperature50K
+End
+
+Boundary Condition 7
+  Name = heatRadiation
+End
+
+Boundary Condition 8
+  Name = airBoundary
+End
+
+Boundary Condition 9
+  Name = bnry17
+End
+
+Boundary Condition 10
+  Name = bnry19
+End
+
+Boundary Condition 11
+  Name = bc28
 End
 

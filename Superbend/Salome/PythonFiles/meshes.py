@@ -30,7 +30,7 @@ if areSubmeshGroupsWanted:
     # 2D submesh of faces:
     NETGEN_1D_2D_1 = assemblyMesh.Triangle(algo=smeshBuilder.NETGEN_1D2D, geom=submeshFaceGroup)
     NETGEN_2D_Parameters_1 = NETGEN_1D_2D_1.Parameters()
-    NETGEN_2D_Parameters_1.SetMaxSize( 0.1 )
+    NETGEN_2D_Parameters_1.SetMaxSize( 0.2 )
     NETGEN_2D_Parameters_1.SetMinSize( 0.0001)
     NETGEN_2D_Parameters_1.SetSecondOrder( 0 )
     NETGEN_2D_Parameters_1.SetOptimize( 1 )

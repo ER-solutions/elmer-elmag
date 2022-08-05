@@ -39,11 +39,19 @@ solidDict = {
     'coil1': ('SC', colorDict['orange']),
     'coil2': ('SC', colorDict['orange']),
     'core': ('iron', colorDict['gray']),
+    'straps': ('G10', colorDict['green']),
     'air': ('air', colorDict['blue'])
 }
 
 # face name: color
 faceDict = {
+    'racetrack1Boundary': colorDict['orange'],
+    'racetrack2Boundary': colorDict['orange'],
+    'coil1Boundary': colorDict['orange'],
+    'coil2Boundary': colorDict['orange'],
+    'fixedTemperature4K': colorDict['blue'],
+    'fixedTemperature50K': colorDict['red'],
+    'heatRadiation': colorDict['salmon'],
     'airBoundary': colorDict['gray']
 }
 

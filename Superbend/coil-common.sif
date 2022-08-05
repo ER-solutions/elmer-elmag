@@ -58,6 +58,7 @@ Body 4
   Body Force = 1
 End
 
+!--- Be aware that all the non inductors should not use the CoilSolver.
 Body 5
   Name = "Core"
   Target Bodies(1) = 5
@@ -67,9 +68,17 @@ Body 5
 End
 
 Body 6
-  Name = "air"
+  Name = "Straps"
   Target Bodies(1) = 6
   Equation = 2
+  Material = 4
+  Initial Condition = 1
+End
+
+Body 7
+  Name = "air"
+  Target Bodies(1) = 7
+  Equation = 3
   Material = 1
   Initial Condition = 1
 End
@@ -153,31 +162,29 @@ Material 2
   Relative Permeability = Real 1.0
   Relative Permittivity = Real 1.0
 
-  ! Heat Conductivity(3,3) = Variable Temperature, Magnetic Flux Density e, Current Density e
-  !   Real Procedure "./Fortran90/therConductivity" "getTherConductivity"
-  !
-  ! Density = Real 9010.0
-  ! Heat Capacity = Variable Temperature
-  !   Real
-  !     Include "./DATA/cp_eq.dat"
-  !   End
-  !
-  ! !--- Parameters of superconducting wire and coil
-  ! Matrix Density = Real 8960.0
-  ! Superconductor Density = Real 7000.0
-  ! Matrix Electric Conductivity = Real 1e8 ! lumped materials called matrix
-  ! Critical Temperature = Real 16.8
-  ! N-Value = Real 15.0
-  ! Critical Electrical Field = Real 1e-4
-  ! Operating Temperature = Real $ Top
-  ! Matrix to Superconductor Ratio = Real 1.2
-  ! Filling Factor = Real 0.9
+  Heat Conductivity(3,3) = Variable Temperature, Magnetic Flux Density e, Current Density e
+    Real Procedure "./Fortran90/therConductivity" "getTherConductivity"
+
+  Density = Real 9010.0
+  Heat Capacity = Variable Temperature
+    Real
+      Include "./DATA/cp_eq.dat"
+    End
+
+  !--- Parameters of superconducting wire and coil
+  Matrix Density = Real 8960.0
+  Superconductor Density = Real 7000.0
+  Matrix Electric Conductivity = Real 1e8 ! lumped materials called matrix
+  Critical Temperature = Real 16.8
+  N-Value = Real 15.0
+  Critical Electrical Field = Real 1e-4
+  Operating Temperature = Real 4.5
+  Matrix to Superconductor Ratio = Real 1.2
+  Filling Factor = Real 0.9
 
   !--- Read into the circuit solver: computes the resistance as the sum of all the element contribution
-  Electric Conductivity = Real 1e8
-  ! Electric Conductivity = Variable Temperature, Magnetic Flux Density e, Current Density e
-  ! Electric Conductivity = Variable 4.5, Magnetic Flux Density e, Current Density e
-  !   Real Procedure "./Fortran90/electricalConductivity" "getElectricalConductivity"
+  Electric Conductivity = Variable Temperature, Magnetic Flux Density e, Current Density e
+    Real Procedure "./Fortran90/electricalConductivity" "getElectricalConductivity"
 End
 
 Material 3
@@ -185,23 +192,23 @@ Material 3
   Relative Permeability = Real 1.0
   Relative Permittivity = Real 1.0
 
-  ! H-B Curve = Variable "dummy"
-  !   Real Cubic Monotone
-  !     Include ./DATA/curve_BH-CERN.dat
-  !   End
+  H-B Curve = Variable "dummy"
+    Real Cubic Monotone
+      Include ./DATA/curve_BH-CERN.dat
+    End
 
-  ! !--- k of ARMCO (works with try.dat if we do not had the next include of the cp
-  ! !--- Real means: Real Piecewise Linear
-  ! Heat Conductivity = Variable Temperature
-  !   Real
-  !     Include "./DATA/k_T_armco.dat"
-  !   End
-  !
-  ! Density = Real 7860.0
-  ! Heat Capacity = Variable Temperature
-  !   Real
-  !     Include "./DATA/cp_T_316LN.dat"
-  !   End
+  !--- k of ARMCO (works with try.dat if we do not had the next include of the cp
+  !--- Real means: Real Piecewise Linear
+  Heat Conductivity = Variable Temperature
+    Real
+      Include "./DATA/k_T_armco.dat"
+    End
+
+  Density = Real 7860.0
+  Heat Capacity = Variable Temperature
+    Real
+      Include "./DATA/cp_T_316LN.dat"
+    End
 End
 
 Material 4
@@ -209,18 +216,18 @@ Material 4
   Relative Permeability = Real 1.0
   Relative Permittivity = Real 1.0
 
-  ! !--- k of epoxy
-  ! Heat Conductivity = Variable Temperature
-  !   Real
-  !     Include "./DATA/k_T_epoxy.dat"
-  !   End
-  !
-  ! Density = Real 1800.0
-  ! !--- cp of epoxy
-  ! Heat Capacity = Variable Temperature
-  !   Real
-  !     Include "./DATA/cp_T_epoxy.dat"
-  !   End
+  !--- k of epoxy
+  Heat Conductivity = Variable Temperature
+    Real
+      Include "./DATA/k_T_epoxy.dat"
+    End
+
+  Density = Real 1800.0
+  !--- cp of epoxy
+  Heat Capacity = Variable Temperature
+    Real
+      Include "./DATA/cp_T_epoxy.dat"
+    End
 End
 
 
@@ -230,35 +237,35 @@ Initial Condition 1
   A {e} = Real 0.0
   A = Real 0.0
   Jfix = Real 0.0
-  ! Temperature = Real $ Top
+  Temperature = Real 4.5
 End
 
 Boundary Condition 1
   Name = "Air boundary"
-  Target Boundaries(1) = 7
+  Target Boundaries(1) = 15
   A {e} = real 0
   ! A = real 0
   ! Jfix = real 0.0
 End
 
-! Boundary Condition 2
-!   Name = "Fixed temperature at 4.5 k"
-!   Target Boundaries(1) = 12
-!   Temperature = Real $ Top
-! End
+Boundary Condition 2
+  Name = "Fixed temperature at 4.5 k"
+  Target Boundaries(1) = 12
+  Temperature = Real 4.5
+End
 
-! Boundary Condition 3
-!   Name = "Fixed temperature at 50 k"
-!   Target Boundaries(1) = 13
-!   Temperature = Real 50.0
-! End
+Boundary Condition 3
+  Name = "Fixed temperature at 50 k"
+  Target Boundaries(1) = 13
+  Temperature = Real 50.0
+End
 
-! Boundary Condition 4
-!   Name = "Heat radiation as a heat flux [W/m^2]"
-!   Target Boundaries(1) = 14
-!   Heat Flux BC = Logical True
-!   Heat Flux = Real 0.03
-! End
+Boundary Condition 4
+  Name = "Heat radiation as a heat flux [W/m^2]"
+  Target Boundaries(1) = 14
+  Heat Flux BC = Logical True
+  Heat Flux = Real 0.03
+End
 
 
 !!! SOLVERS !!!
@@ -317,7 +324,7 @@ Solver 3  !---- MagnetoDynamics, WhitneyAVSolver: A-V solver
    !--- Solution circuit:
    Linear System Solver = Iterative
    Linear System Iterative Method = BicgstabL
-   BicgstabL polynomial degree = 4
+   BicgstabL polynomial degree = 6
    Linear System Preconditioning = circuit ! inversion of circuit matrix
    Linear System Convergence Tolerance = 1.0e-8 ! add to drop the tolerance
    Linear System Max Iterations = 3000
@@ -351,66 +358,71 @@ Solver 4  !---- MagnetoAndDynamics, MagnetoDynamicsCalcFields: filed computation
   Calculate Current Density = Logical True
 End
 
-Solver 5  !--- CircuitsAndDynamics, CircuitsOutput: save data from circuit
+Solver 5 !--- HeatSolve: Heat balance equation
+  Exec Solver = Always
+  Equation = String "Heat Equation"
+  Procedure = "HeatSolve" "HeatSolver"
+
+  Variable = -dofs 1 Temperature
+
+  Stabilize = True
+
+  Steady State Convergence Tolerance = 1.0e-6
+
+  Nonlinear Timestepping = Logical True
+
+  Nonlinear System Convergence Tolerance = 1.0e-6
+  Nonlinear System Max Iterations = 25
+  Nonlinear System Newton After Iterations = 10
+  Nonlinear System Newton After Tolerance = 1.0e-4
+  Nonlinear System Relaxation Factor = 0.5
+
+  Linear System Solver = Iterative
+  Linear System Iterative Method = BiCGStabl
+  Linear System Max Iterations = 500
+  Linear System Convergence Tolerance = 1.0e-6
+  BiCGstabl polynomial degree = 6
+  Linear System Abort Not Converged = Logical False
+  Linear System Preconditioning = ILU2 ! none
+  Linear System Residual Output = 10
+  Linear System Precondition Recompute = 1
+End
+
+Solver 6 !--- Filter: soft filter for the temperature field
+  !--- If T < T_min (minimum temperature expected in the system) then T = T_min
+  Exec Solver = Always
+  Equation = String "Filter"
+  Procedure = "./Fortran90/regularization" "getRegularizationSolver"
+  Minimum Temperature = Real 4.5
+End
+
+Solver 7 !--- Check Model: Check if nodes are inside the volume of the disturbance, otherwise, the program stops
+  Exec Solver = Always
+  Equation = String "Check Model"
+  Procedure = "./Fortran90/checkMeshSize" "getCheckMeshSizeSolver"
+End
+
+Solver 8  !--- CircuitsAndDynamics, CircuitsOutput: save data from circuit
    Exec Solver = Always
    Equation = Circuits Output
    Procedure = "CircuitsAndDynamics" "CircuitsOutput"
 End
 
-! Solver 8 !--- HeatSolve: Heat balance equation
-!   Exec Solver = Always
-!   Equation = String "Heat Equation"
-!   Procedure = "HeatSolve" "HeatSolver"
-!
-!   Variable = -dofs 1 Temperature
-!
-!   Stabilize = True
-!
-!   Steady State Convergence Tolerance = 1.0e-6
-!
-!   Nonlinear Timestepping = Logical True
-!
-!   Nonlinear System Convergence Tolerance = 1.0e-6
-!   Nonlinear System Max Iterations = 25
-!   Nonlinear System Newton After Iterations = 10
-!   Nonlinear System Newton After Tolerance = 1.0e-4
-!   Nonlinear System Relaxation Factor = 0.5
-!
-!   Linear System Solver = Iterative
-!   Linear System Iterative Method = BiCGStabl
-!   Linear System Max Iterations = 500
-!   Linear System Convergence Tolerance = 1.0e-6
-!   BiCGstabl polynomial degree = 6
-!   Linear System Abort Not Converged = Logical False
-!   Linear System Preconditioning = ILU2 ! none
-!   Linear System Residual Output = 10
-!   Linear System Precondition Recompute = 1
-! End
-!
-! Solver 9 !--- Filter: soft filter for the temperature field
-!   !--- If T < T_min (minimum temperature expected in the system) then T = T_min
-!   Exec Solver = Always
-!   Equation = String "Filter"
-!   Procedure = "./Fortran90/regularization" "getRegularizationSolver"
-!   Minimum Temperature = Real 4.5
-! End
-!
-! Solver 10 !--- Check Model: Check if nodes are inside the volume of the disturbance, otherwise, the program stops
-!   Exec Solver = Always
-!   Equation = String "Check Model"
-!   Procedure = "./Fortran90/checkMeshSize" "getCheckMeshSizeSolver"
-! End
-
 
 !!! EQUATIONS !!!
 Equation 1
-  Name = "Multiphysics for solids"
-  Active Solvers(7) = 1 2 3 4 5 6 7
-  ! Active Solvers(10) = 1 2 3 4 5 6 7 8 9 10
-  ! Heat Equation = Logical True
+  Name = "Multiphysics for inductors"
+  Active Solvers(10) = 1 2 3 4 5 6 7 8 9 10
+  Heat Equation = Logical True
 End
 
 Equation 2
+  Name = "Multiphysics for magnetic core and straps"
+  Active Solvers(7) = 3 4 5 6 7 9 10
+  Heat Equation = Logical True
+End
+
+Equation 3
   Name = "MagnetoDynamic for air"
-  Active Solvers(3) = 3 4 6
+  Active Solvers(3) = 3 4 9
 End
