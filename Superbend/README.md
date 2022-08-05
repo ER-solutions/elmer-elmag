@@ -1,7 +1,7 @@
 # NOTES!!!
 
-FEM solver: Elmerfem \<http://www.elmerfem.org/blog/\> <br />
-Geometry builder and mesher: salome platform <https://www.salome-platform.org/> <br />
+FEM solver: Elmerfem (http://www.elmerfem.org/blog/) <br />
+Geometry builder and mesher: salome platform (https://www.salome-platform.org/) <br />
 As 2022, tested with Elmerfem 9.0 and Salome 9.9.0 <br />
 
 To make the *.sh files executable: "chmod u+x *.sh" <br />
