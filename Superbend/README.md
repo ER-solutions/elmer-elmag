@@ -1,14 +1,14 @@
 # NOTES!!!
 
-FEM solver: Elmerfem <http://www.elmerfem.org/blog/>
-Geometry builder and mesher: salome platform <https://www.salome-platform.org/>
-As 2022, tested with Elmerfem 9.0 and Salome 9.9.0
+FEM solver: Elmerfem <http://www.elmerfem.org/blog/> <br />
+Geometry builder and mesher: salome platform <https://www.salome-platform.org/> <br />
+As 2022, tested with Elmerfem 9.0 and Salome 9.9.0 <br />
 
-To make the *.sh files executable: "chmod u+x *.sh"
-1- Run the solver without log file: "bash run.sh" or "./run.sh"
-2- Run the solver with log file: "bash run.sh logfilename" or "./run.sh logfilename"
-3- Run the geometry builder and mesher alone: ./meshGeneration.sh
-4- Compile the User Defined Functions (UDF) alone: ./compileUDF.sh
+To make the *.sh files executable: "chmod u+x *.sh" <br />
+1- Run the solver without log file: "bash run.sh" or "./run.sh" <br />
+2- Run the solver with log file: "bash run.sh logfilename" or "./run.sh logfilename" <br />
+3- Run the geometry builder and mesher alone: ./meshGeneration.sh <br />
+4- Compile the User Defined Functions (UDF) alone: ./compileUDF.sh <br />
 5- Run step 3 and 4 combined: "./main.sh" or "./main.sh logfilename"
 
 
